@@ -7,7 +7,7 @@ const {
   deleteIssue
 } = require('../controllers/issue');
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 router.route('/').get(getIssues);
 

@@ -6,6 +6,10 @@ const IssueSchema = new mongoose.Schema(
       type: mongoose.Schema.ObjectId,
       ref: 'Project'
     },
+    key: {
+      type: String,
+      unique: true
+    },
     type: {
       type: String
     },
@@ -15,26 +19,32 @@ const IssueSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: [
-        'open',
-        'closed',
-        'assigned',
-        'in progress',
-        'resolved',
-        'reopened'
-      ]
+      enum: ['Open', 'Closed', 'In progress', 'Resolved', 'Reopened'],
+      default: 'Open'
     },
     resolution: {
-      type: String
+      type: String,
+      enum: [
+        'Unresolved',
+        'Fixed',
+        "Won't fix",
+        'Duplicate',
+        'Incomplete',
+        'Cannot reproduce',
+        'FAD'
+      ],
+      default: 'Unresolved'
     },
     summary: {
       type: String
     },
     priority: {
-      type: String
+      type: String,
+      enum: ['Blocker', 'Critical', 'Major', 'Minor', 'Trivial']
     },
     severity: {
-      type: String
+      type: String,
+      enum: ['Blocker', 'Critical', 'Major', 'Minor', 'Trivial']
     },
     description: {
       type: String
@@ -57,7 +67,16 @@ const IssueSchema = new mongoose.Schema(
     assignedTo: {
       type: mongoose.Schema.ObjectId,
       ref: 'User'
-    }
+    },
+    submittedBy: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User'
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now
+    },
+    attachments: [{ type: String }]
   },
 
   {
