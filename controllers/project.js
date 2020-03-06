@@ -1,6 +1,9 @@
 const express = require('express');
 const Project = require('../models/Project');
+const User = require('../models/User');
+const Priviliges = require('../models/Privileges');
 const asyncHandler = require('../midleware/async-handler');
+const ErrorResponse = require('../utils/error-response');
 
 // @desc      Get all projects
 // @route     GET /api/project/
@@ -16,7 +19,9 @@ exports.getAllProjects = asyncHandler(async (req, res, next) => {
 // @desc      Get single project
 // @route     GET /api/project/:id
 exports.getSingleProject = asyncHandler(async (req, res, next) => {
-  const project = await Project.findById(req.params.id).populate('issues');
+  const project = await Project.findById(req.params.id)
+    .populate('issues')
+    .populate('team');
 
   if (!project) {
     return next(
@@ -81,7 +86,7 @@ exports.deleteProject = asyncHandler(async (req, res, next) => {
 
   await project.remove();
 
-  res.status(201).json({
+  res.status(200).json({
     success: true,
     data: project
   });

@@ -57,6 +57,7 @@ exports.createIssue = asyncHandler(async (req, res, next) => {
 
   req.body.project = projectId;
   req.body.key = issueKey;
+  req.body.submittedBy = req.user._id;
 
   const issue = await Issue.create(req.body);
 

@@ -6,14 +6,16 @@ const {
   updateProject,
   deleteProject
 } = require('../controllers/project');
-
-const issueRouter = require('./issue');
+const { manageTeam } = require('../controllers/team');
 
 const router = express.Router();
 
+const issueRouter = require('./issue');
 router.use('/:projectId/issue', issueRouter);
 
 router.route('/create').post(createProject);
+
+router.route('/:id/team').put(manageTeam);
 
 router
   .route('/:id')
