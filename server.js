@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const path = require('path');
 const connectToMongoDb = require('./config/mongodb');
 const cookieParser = require('cookie-parser');
+const upload = require('./config/multer');
 
 // Load environment variables
 dotenv.config({ path: './config/config.env' });
@@ -19,6 +20,8 @@ app.use(express.urlencoded({ extended: true }));
 // Cookie parser
 app.use(cookieParser());
 
+app.use(upload.array('file'));
+
 if (process.env.NODE_ENV === 'development') {
   const morgan = require('morgan');
   app.use(morgan('dev'));
@@ -29,6 +32,11 @@ if (process.env.NODE_ENV === 'development') {
 // app.use(express.static(path.join(__dirname, 'client/build')));
 
 // Setting up routes
+// Auth routes
+const authRoute = require('./routes/auth');
+app.use('/api/auth', authRoute);
+// Protected routes
+
 const projectRoute = require('./routes/project');
 app.use('/api/project', projectRoute);
 const issueRoute = require('./routes/issue');

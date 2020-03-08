@@ -7,13 +7,14 @@ const {
   deleteIssue
 } = require('../controllers/issue');
 
-const { protect } = require('../midleware/auth');
-
 const router = express.Router({ mergeParams: true });
+
+const { protect } = require('../midleware/auth');
+router.use(protect);
 
 router.route('/').get(getIssues);
 
-router.route('/create').post(protect, createIssue);
+router.route('/create').post(createIssue);
 
 router
   .route('/:id')

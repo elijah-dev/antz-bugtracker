@@ -1,22 +1,14 @@
 const express = require('express');
-const {
-  getUser,
-  loginUser,
-  registerUser,
-  deleteUser
-} = require('../controllers/user');
-
-const { protect } = require('../midleware/auth');
+const { getCurrentUser, deleteUser } = require('../controllers/user');
 
 const router = express.Router({ mergeParams: true });
 
-router.route('/register').post(registerUser);
-
-router.route('/login').post(loginUser);
+const { protect } = require('../midleware/auth');
+router.use(protect);
 
 router
   .route('/')
-  .get(protect, getUser)
+  .get(getCurrentUser)
   .delete(deleteUser);
 
 module.exports = router;

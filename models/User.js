@@ -15,7 +15,8 @@ const UserSchema = new mongoose.Schema(
     login: {
       type: String,
       required: true,
-      unique: true
+      unique: true,
+      select: false
     },
     password: {
       type: String,
@@ -43,7 +44,7 @@ UserSchema.pre('save', async function(next) {
 });
 
 UserSchema.pre('remove', async function(next) {
-  await this.model('Priviliges').deleteMany({ user: this._id });
+  await this.model('PermissionList').deleteMany({ user: this._id });
   next();
 });
 

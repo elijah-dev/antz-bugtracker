@@ -1,13 +1,13 @@
 const express = require('express');
 const Project = require('../models/Project');
 const User = require('../models/User');
-const Priviliges = require('../models/Privileges');
+const PermissionList = require('../models/PermissonList');
 const asyncHandler = require('../midleware/async-handler');
 const ErrorResponse = require('../utils/error-response');
 const _ = require('lodash');
 
 // @desc      Invite user to the project
-// @route     PUT /api/project/:id/invite
+// @route     PUT /api/project/:id/team
 exports.manageTeam = asyncHandler(async (req, res, next) => {
   if (!req.query.user) {
     return next(new ErrorResponse(`No user id provided`, 400));
@@ -44,12 +44,12 @@ exports.manageTeam = asyncHandler(async (req, res, next) => {
         );
       }
 
-      const priviliges = await Priviliges.create({
+      const permissions = await PermissionList.create({
         project: project._id,
         user: user._id
       });
 
-      if (!priviliges) {
+      if (!permissions) {
         return next(new ErrorResponse(`Could not create privilege list`, 500));
       }
 
@@ -66,16 +66,16 @@ exports.manageTeam = asyncHandler(async (req, res, next) => {
         );
       }
 
-      const priviliges = await Priviliges.findOne({
+      const permissions = await PermissionList.findOne({
         project: project._id,
         user: user._id
       });
 
-      if (!priviliges) {
+      if (!permissions) {
         return next(new ErrorResponse(`Could not find privilege list`, 500));
       }
 
-      await priviliges.remove();
+      await permissions.remove();
 
       const member = project.team.indexOf(user._id);
       project.team.splice(member, 1);
@@ -92,5 +92,21 @@ exports.manageTeam = asyncHandler(async (req, res, next) => {
   res.status(201).json({
     success: true,
     data: project
+  });
+});
+
+// @desc      Get team members of the project
+// @route     GET /api/project/:id/team
+exports.getMembers = asyncHandler(async (req, res, next) => {
+  const members = await PermissionList.find({
+    ...req.query,
+    project: req.params.id
+  })
+    .select('-project -_id')
+    .populate('user');
+
+  res.status(200).json({
+    success: true,
+    data: members
   });
 });

@@ -11,13 +11,7 @@ const ProjectSchema = new mongoose.Schema(
       type: String,
       unique: true,
       required: true
-    },
-    team: [
-      {
-        type: mongoose.Schema.ObjectId,
-        ref: 'User'
-      }
-    ]
+    }
   },
   {
     toJSON: { virtuals: true },
@@ -27,6 +21,7 @@ const ProjectSchema = new mongoose.Schema(
 
 ProjectSchema.pre('remove', async function(next) {
   await this.model('Issue').deleteMany({ project: this._id });
+  await this.model('PermissionList').deleteMany({ project: this._id });
   next();
 });
 

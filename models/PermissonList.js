@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const PriviligesSchema = new mongoose.Schema({
+const PermissionListSchema = new mongoose.Schema({
   project: {
     type: mongoose.Schema.ObjectId,
     ref: 'Project'
@@ -9,11 +9,19 @@ const PriviligesSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: 'User'
   },
-  canInviteUsers: {
+  canAddTeamMembers: {
     type: Boolean,
     default: false
   },
-  canChangePriviliges: {
+  canRemoveTeamMembers: {
+    type: Boolean,
+    default: false
+  },
+  canChangePermissions: {
+    type: Boolean,
+    default: false
+  },
+  canEditProject: {
     type: Boolean,
     default: false
   },
@@ -29,10 +37,10 @@ const PriviligesSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  canChangeStatus: {
+  canSetStatus: {
     type: Boolean,
     default: false
   }
 });
 
-module.exports = mongoose.model('Priviliges', PriviligesSchema);
+module.exports = mongoose.model('PermissionList', PermissionListSchema);

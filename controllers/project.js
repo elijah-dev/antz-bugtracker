@@ -1,7 +1,7 @@
 const express = require('express');
 const Project = require('../models/Project');
 const User = require('../models/User');
-const Priviliges = require('../models/Privileges');
+const PermissionList = require('../models/PermissonList');
 const asyncHandler = require('../midleware/async-handler');
 const ErrorResponse = require('../utils/error-response');
 
@@ -44,9 +44,27 @@ exports.createProject = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse(`Could not create project`, 500));
   }
 
+  let permissions = await PermissionList.create({
+    project: project._id,
+    user: req.user._id,
+    canAddTeamMembers: true,
+    canRemoveTeamMembers: true,
+    canChangePermissions: true,
+    canEditProject: true,
+    canAssignIssues: true,
+    canSubmitIssues: true,
+    canSetResolution: true,
+    canSetStatus: true
+  });
+
+  if (!permissions) {
+    return next(new ErrorResponse(`Could not set default privileges`, 500));
+  }
+
   res.status(201).json({
     success: true,
-    data: project
+    data: project,
+    permissions
   });
 });
 

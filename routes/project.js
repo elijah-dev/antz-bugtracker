@@ -6,16 +6,22 @@ const {
   updateProject,
   deleteProject
 } = require('../controllers/project');
-const { manageTeam } = require('../controllers/team');
+const { manageTeam, getMembers } = require('../controllers/team');
 
 const router = express.Router();
 
 const issueRouter = require('./issue');
 router.use('/:projectId/issue', issueRouter);
 
+const { protect } = require('../midleware/auth');
+router.use(protect);
+
 router.route('/create').post(createProject);
 
-router.route('/:id/team').put(manageTeam);
+router
+  .route('/:id/team')
+  .get(getMembers)
+  .put(manageTeam);
 
 router
   .route('/:id')

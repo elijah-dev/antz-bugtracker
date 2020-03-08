@@ -3,3 +3,4 @@ config/config.env
 seeder.js
 _data/
 nodemon.json
+tmp/
