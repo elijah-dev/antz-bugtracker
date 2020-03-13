@@ -6,7 +6,7 @@ const asyncHandler = require('../midleware/async-handler');
 const ErrorResponse = require('../utils/error-response');
 const _ = require('lodash');
 
-// @desc      Invite user to the project
+// @desc      Add or remove user to the project
 // @route     PUT /api/project/:id/team
 exports.manageTeam = asyncHandler(async (req, res, next) => {
   if (!req.query.user) {
@@ -35,51 +35,43 @@ exports.manageTeam = asyncHandler(async (req, res, next) => {
 
   switch (req.query.action) {
     case 'add': {
-      if (project.team.includes(user._id)) {
+      let permissions = await PermissionList.findOne({
+        project: project._id,
+        user: user._id
+      });
+
+      if (permissions) {
         return next(
           new ErrorResponse(
-            `User with an id of ${user._id} already is in the team`,
-            400
+            `${user.firstName} ${user.secondName} is already project team member`,
+            500
           )
         );
       }
 
-      const permissions = await PermissionList.create({
+      permissions = await PermissionList.create({
         project: project._id,
         user: user._id
       });
 
       if (!permissions) {
-        return next(new ErrorResponse(`Could not create privilege list`, 500));
+        return next(new ErrorResponse(`Could not create permission list`, 500));
       }
 
-      project.team.push(user._id);
       break;
     }
     case 'remove': {
-      if (!project.team.includes(user._id)) {
-        return next(
-          new ErrorResponse(
-            `User with an id of ${user._id} is not in the team`,
-            400
-          )
-        );
-      }
-
       const permissions = await PermissionList.findOne({
         project: project._id,
         user: user._id
       });
 
       if (!permissions) {
-        return next(new ErrorResponse(`Could not find privilege list`, 500));
+        return next(new ErrorResponse(`Could not find permission list`, 500));
       }
 
       await permissions.remove();
 
-      const member = project.team.indexOf(user._id);
-      project.team.splice(member, 1);
-      console.log(project);
       break;
     }
     default: {
@@ -87,11 +79,9 @@ exports.manageTeam = asyncHandler(async (req, res, next) => {
     }
   }
 
-  await project.save();
-
   res.status(201).json({
     success: true,
-    data: project
+    data: { ...project, ...permissions, ...user }
   });
 });
 

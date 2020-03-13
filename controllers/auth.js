@@ -2,7 +2,10 @@ const express = require('express');
 const User = require('../models/User');
 const asyncHandler = require('../midleware/async-handler');
 const ErrorResponse = require('../utils/error-response');
-const uploadToCloudinary = require('../config/cloudinary');
+const {
+  uploadToCloudinary,
+  deleteFromCloudinary
+} = require('../config/cloudinary');
 const cloudinary = require('cloudinary').v2;
 const fs = require('fs');
 const path = require('path');
@@ -16,7 +19,7 @@ const options = {
 exports.register = asyncHandler(async (req, res, next) => {
   const image = path.join(__dirname, '..', 'tmp', req.files[0].filename);
 
-  const avatar = await uploadToCloudinary(image);
+  const avatar = await uploadToCloudinary(image, { folder: 'avatars' });
 
   fs.unlinkSync(image);
 

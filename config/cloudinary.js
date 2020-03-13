@@ -1,12 +1,34 @@
 const cloudinary = require('cloudinary').v2;
 
-function uploadToCloudinary(image) {
+function uploadToCloudinary(file, options) {
   return new Promise((resolve, reject) => {
-    cloudinary.uploader.upload(image, (err, url) => {
+    cloudinary.uploader.upload(file, options, (err, res) => {
       if (err) return reject(err);
-      return resolve(url);
+      return resolve(res);
     });
   });
 }
 
-module.exports = uploadToCloudinary;
+function deleteFromCloudinary(file, options) {
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader.destroy(file, options, (err, res) => {
+      if (err) return reject(err);
+      return resolve(res);
+    });
+  });
+}
+
+function deleteCloudinaryFolder(file, options) {
+  return new Promise((resolve, reject) => {
+    cloudinary.api.delete_folder(file, options, (err, res) => {
+      if (err) return reject(err);
+      return resolve(res);
+    });
+  });
+}
+
+module.exports = {
+  uploadToCloudinary,
+  deleteFromCloudinary,
+  deleteCloudinaryFolder
+};

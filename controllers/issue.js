@@ -3,6 +3,15 @@ const Issue = require('../models/Issue');
 const Project = require('../models/Project');
 const asyncHandler = require('../midleware/async-handler');
 const ErrorResponse = require('../utils/error-response');
+const {
+  uploadToCloudinary,
+  deleteFromCloudinary,
+  deleteCloudinaryFolder
+} = require('../config/cloudinary');
+const cloudinary = require('cloudinary').v2;
+const path = require('path');
+const fs = require('fs');
+const url = require('url');
 
 // @desc      Get issues
 // @route     GET /api/project/:id/issue
@@ -40,6 +49,7 @@ exports.getSingleIssue = asyncHandler(async (req, res, next) => {
 // @desc      Create issue
 // @route     POST /api/project/:projectId/issue/create
 exports.createIssue = asyncHandler(async (req, res, next) => {
+  let body = req.body;
   const projectId = req.params.projectId;
 
   const project = await Project.findById(projectId, 'key -_id');
@@ -55,11 +65,41 @@ exports.createIssue = asyncHandler(async (req, res, next) => {
   // Construct issue key
   const issueKey = `${project.key}-${issues.length + 1}`;
 
-  req.body.project = projectId;
-  req.body.key = issueKey;
-  req.body.submittedBy = req.user._id;
+  // Handle attachments
+  let attachments = [];
+  if (req.files) {
+    const files = req.files;
+    const filePaths = files.map(
+      file => (file = path.join(__dirname, '..', 'tmp', file.filename))
+    );
 
-  const issue = await Issue.create(req.body);
+    for (let file of files) {
+      let attachment = await uploadToCloudinary(file.path, {
+        resource_type: 'auto',
+        folder: `issue-attachments/${issueKey}`
+      });
+      console.log(
+        `File ${file.filename} uploaded on ${attachment.created_at}`.green
+      );
+      attachments.push(attachment.url);
+    }
+
+    for (let path of filePaths) {
+      fs.unlinkSync(path);
+      let f = fs.existsSync(path);
+      if (!f) {
+        console.log(`Temporary file removed`.blue);
+      }
+    }
+  }
+
+  // Constructing body
+  body.project = projectId;
+  body.key = issueKey;
+  body.submittedBy = req.user._id;
+  body.attachments = attachments;
+
+  const issue = await Issue.create(body);
 
   if (!issue) {
     return next(new ErrorResponse(`Could not create issue`, 500));
@@ -97,7 +137,32 @@ exports.updateIssue = asyncHandler(async (req, res, next) => {
 // @desc      Delete bootcamp
 // @route     DELETE /api/issue/:id
 exports.deleteIssue = asyncHandler(async (req, res, next) => {
-  const issue = await Issue.findByIdAndDelete(req.params.id);
+  if (!user.admin) {
+    return next(new ErrorResponse(`Only admin can access this route`, 404));
+  }
+
+  const issue = await Issue.findById(req.params.id);
+
+  for (let path of issue.attachments) {
+    let type = 'image';
+    if (path.match(/video/)) {
+      type = 'video';
+    }
+    console.log(`Deleting ${type} from cloudinary...`);
+
+    const id = path.match(/issue-attachments\/.*(?=\.)/);
+    const del = await deleteFromCloudinary(id[0], { resource_type: type });
+    if (del.result === 'ok') {
+      console.log(`${type} deleted successfuly from Cloudinary`);
+    } else {
+      console.warn(`${type} was not deleted!`);
+    }
+  }
+
+  const folder = issue.attachments[0].match(/issue-attachments\/.*(?=\/)/);
+
+  const delf = await deleteCloudinaryFolder(folder[0]);
+  console.log(delf);
 
   if (!issue) {
     return next(
@@ -107,6 +172,8 @@ exports.deleteIssue = asyncHandler(async (req, res, next) => {
       )
     );
   }
+
+  await issue.remove();
 
   res.status(200).json({
     success: true,

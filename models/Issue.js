@@ -19,32 +19,32 @@ const IssueSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['Open', 'Closed', 'In progress', 'Resolved', 'Reopened'],
-      default: 'Open'
+      enum: ['open', 'closed', 'in progress', 'resolved', 'reopened'],
+      default: 'open'
     },
     resolution: {
       type: String,
       enum: [
-        'Unresolved',
-        'Fixed',
-        "Won't fix",
-        'Duplicate',
-        'Incomplete',
-        'Cannot reproduce',
-        'FAD'
+        'unresolved',
+        'fixed',
+        "won't fix",
+        'duplicate',
+        'incomplete',
+        'cannot reproduce',
+        'fad'
       ],
-      default: 'Unresolved'
+      default: 'unresolved'
     },
     summary: {
       type: String
     },
     priority: {
       type: String,
-      enum: ['Blocker', 'Critical', 'Major', 'Minor', 'Trivial']
+      enum: ['blocker', 'critical', 'major', 'minor', 'trivial']
     },
     severity: {
       type: String,
-      enum: ['Blocker', 'Critical', 'Major', 'Minor', 'Trivial']
+      enum: ['blocker', 'critical', 'major', 'minor', 'trivial']
     },
     description: {
       type: String

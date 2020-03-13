@@ -1,5 +1,7 @@
 const express = require('express');
 const User = require('../models/User');
+const Project = require('../models/Project');
+const PermissionList = require('../models/PermissonList');
 const asyncHandler = require('../midleware/async-handler');
 const ErrorResponse = require('../utils/error-response');
 
@@ -17,6 +19,35 @@ exports.getCurrentUser = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     data: user
+  });
+});
+
+// @desc      Find all users
+// @route     GET /api/user/all
+exports.getAllUsers = asyncHandler(async (req, res, next) => {
+  const users = await User.find().lean();
+  let fullUsers = [];
+
+  for (let user of users) {
+    const permissions = await PermissionList.find({ user: user._id })
+      .select('-user')
+      .populate('project');
+
+    user = { ...user, projects: permissions };
+    fullUsers.push(user);
+  }
+
+  console.log(fullUsers);
+
+  // if (!user) {
+  //   return next(
+  //     new ErrorResponse(`User not found with an id of ${req.user._id}`, 404)
+  //   );
+  // }
+
+  res.status(200).json({
+    success: true,
+    data: fullUsers
   });
 });
 
