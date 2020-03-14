@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Collapse,
   Navbar,
@@ -13,8 +13,12 @@ import {
   DropdownItem,
   NavbarText
 } from 'reactstrap';
+import { useSelector, useDispatch } from 'react-redux';
+import { getProjects } from '../actions/projects';
 
-const Navpanel = props => {
+const Navpanel = () => {
+  const dispatch = useDispatch();
+  useEffect(() => dispatch(getProjects()));
   return (
     <Navbar className='bg-primary' dark expand='md'>
       <NavbarBrand href='/'>ANTZ</NavbarBrand>
