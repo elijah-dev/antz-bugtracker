@@ -6,7 +6,7 @@ const errorHandler = (err, req, res, next) => {
 
   error.message = err.message;
   console.error(`${err.name}: ${err.message}`.red.bold);
-  console.error(`${err.reason}${err.stack}`.red);
+  // console.error(`${err.reason}`.red);
 
   res
     .status(error.statusCode || 500)

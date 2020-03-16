@@ -23,7 +23,7 @@ exports.register = asyncHandler(async (req, res, next) => {
 
   fs.unlinkSync(image);
 
-  req.body.avatar = avatar.url;
+  req.body.avatar = avatar.public_id;
 
   const user = await User.create(req.body);
 
@@ -75,6 +75,7 @@ exports.login = asyncHandler(async (req, res, next) => {
     .cookie('token', token, options)
     .json({
       success: true,
+      data: user,
       token
     });
 });

@@ -1,27 +1,32 @@
 import axios from 'axios';
+import {
+  GET_PROJECTS_FETCHING,
+  GET_PROJECTS_SUCCESS,
+  GET_PROJECTS_FAILURE
+} from './index';
 
 const getProjectsFetching = () => {
   return {
-    type: 'GET_PROJECTS_FETCHING'
+    type: GET_PROJECTS_FETCHING
   };
 };
 
 const getProjectsSuccess = projects => {
   return {
-    type: 'GET_PROJECTS_SUCCESS',
+    type: GET_PROJECTS_SUCCESS,
     payload: projects
   };
 };
 
 const getProjectsFailure = error => {
   return {
-    type: 'GET_PROJECTS_FAILURE',
+    type: GET_PROJECTS_FAILURE,
     payload: error
   };
 };
 
 export const getProjects = () => dispatch => {
-  console.log('fetching');
+  console.log('Fetching...');
   dispatch(getProjectsFetching());
   axios
     .get('/api/project')
@@ -30,7 +35,7 @@ export const getProjects = () => dispatch => {
       dispatch(getProjectsSuccess(res.data));
     })
     .catch(error => {
-      console.log(error);
-      dispatch(getProjectsFailure('error'));
+      // console.log(error.response);
+      dispatch(getProjectsFailure(error.response));
     });
 };

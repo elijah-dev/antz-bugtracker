@@ -2,12 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { CloudinaryContext } from 'cloudinary-react';
 import { Provider } from 'react-redux';
 import store from './store';
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <CloudinaryContext cloudName='dgiga3ohj'>
+      <App />
+    </CloudinaryContext>
   </Provider>,
   document.getElementById('root')
 );
