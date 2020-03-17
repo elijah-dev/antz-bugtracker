@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { AUTH_FETCHING, AUTH_SUCCESS, AUTH_FAILURE } from './index';
+import { closeForm } from './auth-form-actions';
 
 const authFetching = () => {
   return {
@@ -39,12 +40,26 @@ export const getCurrentUser = () => dispatch => {
     });
 };
 
-export const loginUser = credentials => dispatch => {
+export const signIn = credentials => dispatch => {
   console.log('Signing in...');
   dispatch(authFetching());
   axios
     .post('/api/auth/login', credentials)
     .then(res => {
+      dispatch(closeForm());
+      dispatch(authSuccess(res.data));
+    })
+    .catch(error => {
+      dispatch(authFailure(error.response.data));
+    });
+};
+
+export const signUp = data => dispatch => {
+  dispatch(authFetching());
+  axios
+    .post('/api/auth/register', data)
+    .then(res => {
+      dispatch(closeForm());
       dispatch(authSuccess(res.data));
     })
     .catch(error => {

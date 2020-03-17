@@ -17,6 +17,10 @@ const options = {
 // @desc      Register new user
 // @route     POST /api/auth/register
 exports.register = asyncHandler(async (req, res, next) => {
+  // console.log(req.files);
+  // console.log(req.body);
+  // res.status(200);
+
   const image = path.join(__dirname, '..', 'tmp', req.files[0].filename);
 
   const avatar = await uploadToCloudinary(image, { folder: 'avatars' });

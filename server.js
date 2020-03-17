@@ -29,20 +29,21 @@ if (process.env.NODE_ENV === 'development') {
 
 // Setting up static directory
 // app.use(express.static(path.join(__dirname, 'public')));
-// app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 // Setting up routes
 // Auth routes
 const authRoute = require('./routes/auth');
 app.use('/api/auth', authRoute);
 // Protected routes
-
 const projectRoute = require('./routes/project');
 app.use('/api/project', projectRoute);
 const issueRoute = require('./routes/issue');
 app.use('/api/issue', issueRoute);
 const userRoute = require('./routes/user');
 app.use('/api/user', userRoute);
+
+app.get('/', (req, res, next) => res.sendFile('index.html'));
 
 //Custom error handler
 const errorHandler = require('./midleware/error-handler');
