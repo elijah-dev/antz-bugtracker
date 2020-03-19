@@ -22,13 +22,13 @@ const authReducer = (state = initialState, action) => {
       return state;
     }
     case AUTH_FAILURE: {
+      state = {};
       state = {
         data: {},
         ...action.payload,
         fetching: false,
         isAuthorized: false
       };
-      console.log(state);
       return state;
     }
     default:

@@ -1,41 +1,55 @@
 import axios from 'axios';
 import {
-  GET_PROJECTS_FETCHING,
-  GET_PROJECTS_SUCCESS,
-  GET_PROJECTS_FAILURE
+  SET_CURRENT_PROJECT_FETCHING,
+  SET_CURRENT_PROJECT_SUCCESS,
+  SET_CURRENT_PROJECT_FAILURE
 } from './index';
+import { closeModal } from './modal-actions';
+import Cookies from 'js-cookie';
 
-const getProjectsFetching = () => {
+const setCurrentProjectFetching = () => {
   return {
-    type: GET_PROJECTS_FETCHING
+    type: SET_CURRENT_PROJECT_FETCHING
   };
 };
 
-const getProjectsSuccess = projects => {
+export const setCurrentProjectSuccess = project => {
   return {
-    type: GET_PROJECTS_SUCCESS,
-    payload: projects
+    type: SET_CURRENT_PROJECT_SUCCESS,
+    payload: project
   };
 };
 
-const getProjectsFailure = error => {
+const setCurrentProjectFailure = error => {
   return {
-    type: GET_PROJECTS_FAILURE,
+    type: SET_CURRENT_PROJECT_FAILURE,
     payload: error
   };
 };
 
-export const getProjects = () => dispatch => {
-  console.log('Fetching...');
-  dispatch(getProjectsFetching());
+export const setCurrentProject = id => dispatch => {
+  dispatch(setCurrentProjectFetching());
   axios
-    .get('/api/project')
+    .get(`/api/project/${id}`)
     .then(res => {
-      console.log(res);
-      dispatch(getProjectsSuccess(res.data));
+      Cookies.set('project', id);
+      dispatch(setCurrentProjectSuccess(res.data));
     })
     .catch(error => {
-      // console.log(error.response);
-      dispatch(getProjectsFailure(error.response));
+      dispatch(setCurrentProjectFailure(error.response.data));
+    });
+};
+
+export const createNewProject = data => dispatch => {
+  dispatch(setCurrentProjectFetching());
+  axios
+    .post('/api/project/create', data)
+    .then(res => {
+      dispatch(closeModal());
+      Cookies.set('project', res.data._id);
+      dispatch(setCurrentProjectSuccess(res.data));
+    })
+    .catch(error => {
+      dispatch(setCurrentProjectFailure(error.response.data));
     });
 };

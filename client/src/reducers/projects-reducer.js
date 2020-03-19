@@ -16,11 +16,12 @@ const projectsReducer = (state = initialState, action) => {
       return state;
     }
     case GET_PROJECTS_SUCCESS: {
-      state = { ...state, ...action.payload, fetching: false };
+      state = {};
+      state = { ...action.payload, fetching: false };
       return state;
     }
     case GET_PROJECTS_FAILURE: {
-      state = { ...state, ...action.payload, fetching: false };
+      state = { data: [], ...action.payload, fetching: false };
       return state;
     }
     default:

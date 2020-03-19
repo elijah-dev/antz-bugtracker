@@ -1,18 +1,22 @@
 import React from 'react';
+import { Button } from 'reactstrap';
 import { useDispatch } from 'react-redux';
-import { openFormSignup } from '../actions/auth-form-actions';
+import { openModal } from '../../actions/modal-actions';
 
 const SignUpButton = props => {
   const dispatch = useDispatch();
 
   if (!props.isAuthorized) {
     return (
-      <span
-        className='mr-2 text-white signin-button'
-        onClick={() => dispatch(openFormSignup())}
+      <Button
+        color='link'
+        className='text-light'
+        onClick={() => {
+          dispatch(openModal('signup'));
+        }}
       >
         Sign up
-      </span>
+      </Button>
     );
   } else {
     return '';

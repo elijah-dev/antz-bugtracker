@@ -4,11 +4,18 @@ const User = require('../models/User');
 const PermissionList = require('../models/PermissonList');
 const asyncHandler = require('../midleware/async-handler');
 const ErrorResponse = require('../utils/error-response');
+const options = {
+  expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+  httpOnly: true
+};
 
 // @desc      Get all projects
 // @route     GET /api/project/
 exports.getAllProjects = asyncHandler(async (req, res, next) => {
   const projects = await Project.find();
+  const userProjects = projects.filter(project =>
+    project.team.includes(req.user._id)
+  );
 
   res.status(200).json({
     success: true,
@@ -29,15 +36,23 @@ exports.getSingleProject = asyncHandler(async (req, res, next) => {
     );
   }
 
+  const permissions = await PermissionList.findOne({
+    user: req.user._id,
+    project: req.params.id
+  }).select('-project -user -_id');
+
   res.status(200).json({
     success: true,
-    data: project
+    data: project,
+    permissions
   });
 });
 
 // @desc      Create project
 // @route     POST /api/project/create
 exports.createProject = asyncHandler(async (req, res, next) => {
+  req.body.team = [];
+  req.body.team.push(req.user._id);
   const project = await Project.create(req.body);
 
   if (!project) {

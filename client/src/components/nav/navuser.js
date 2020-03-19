@@ -1,27 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-
+import {
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
+} from 'reactstrap';
 import Avatar from '../avatar';
 import UserName from '../username';
-import SignInButton from '../signin-button';
-import SignUpButton from '../signup-button';
-import SignOutButton from '../signout-button';
+import SignInButton from '../buttons/signin-button';
+import SignUpButton from '../buttons/signup-button';
+import SignOutButton from '../buttons/signout-button';
 
 const Navuser = () => {
   const isAuthorized = useSelector(state => state.currentUser.isAuthorized);
 
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const toggle = () => {
+    if (isAuthorized) {
+      setDropdownOpen(prevState => !prevState);
+    }
+  };
+
   return (
-    <div className='d-flex align-items-center'>
-      <UserName isAuthorized={isAuthorized} />
+    <Dropdown isOpen={dropdownOpen} toggle={toggle} className='hover-pointer'>
+      <DropdownToggle color='primary' className='d-flex align-items-center'>
+        <UserName isAuthorized={isAuthorized} />
+        <SignInButton isAuthorized={isAuthorized} />
+        <SignUpButton isAuthorized={isAuthorized} />
+        <Avatar size={50} />
+      </DropdownToggle>
+      <DropdownMenu right>
+        <SignOutButton isAuthorized={isAuthorized} />
 
-      <SignInButton isAuthorized={isAuthorized} />
-      <span className='mr-2 text-white'> / </span>
-      <SignUpButton isAuthorized={isAuthorized} />
-
-      <SignOutButton isAuthorized={isAuthorized} />
-
-      <Avatar size={50} />
-    </div>
+        <DropdownItem divider />
+      </DropdownMenu>
+    </Dropdown>
   );
 };
 

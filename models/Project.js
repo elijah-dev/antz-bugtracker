@@ -11,7 +11,13 @@ const ProjectSchema = new mongoose.Schema(
       type: String,
       unique: true,
       required: true
-    }
+    },
+    team: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User'
+      }
+    ]
   },
   {
     toJSON: { virtuals: true },

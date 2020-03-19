@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
+import CloseModalButton from '../buttons/close-modal-button';
 import { useDispatch } from 'react-redux';
 import { signUp } from '../../actions/auth-actions';
 
@@ -27,7 +28,7 @@ const SignUpForm = props => {
     dispatch(signUp(formData));
   };
 
-  if (props.signup) {
+  if (props.type === 'signup') {
     return (
       <Form className='d-flex flex-column' onSubmit={submit}>
         <div className='d-flex justify-content-between'>
@@ -98,9 +99,12 @@ const SignUpForm = props => {
           />
         </FormGroup>
 
-        <Button type='submit' color='primary' className='align-self-end'>
-          Submit
-        </Button>
+        <div className='d-flex justify-content-between'>
+          <CloseModalButton />
+          <Button type='submit' color='primary'>
+            Submit
+          </Button>
+        </div>
       </Form>
     );
   } else return '';

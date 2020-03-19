@@ -1,20 +1,21 @@
 import React from 'react';
+import { DropdownItem } from 'reactstrap';
 import { useDispatch } from 'react-redux';
-import { logout } from '../actions/auth-actions';
+import { logout } from '../../actions/auth-actions';
 
 const SignOutButton = props => {
   const dispatch = useDispatch();
   if (props.isAuthorized) {
     return (
-      <span
-        id='logout'
-        className='mr-2 text-light'
+      <DropdownItem
+        size='sm'
+        color='link'
         onClick={() => {
           dispatch(logout());
         }}
       >
         Sign out
-      </span>
+      </DropdownItem>
     );
   } else return '';
 };

@@ -1,7 +1,8 @@
 import React from 'react';
-import { Navbar, NavbarText } from 'reactstrap';
+import { Navbar } from 'reactstrap';
 import Navlogo from './navlogo';
 import Navuser from './navuser';
+import ProjectsDropdown from './projects-dropdown';
 
 const Navpanel = () => {
   return (
@@ -10,7 +11,10 @@ const Navpanel = () => {
       dark
       expand='md'
     >
-      <Navlogo />
+      <div className='d-flex align-items-center'>
+        <Navlogo />
+        <ProjectsDropdown />
+      </div>
       <Navuser />
     </Navbar>
   );

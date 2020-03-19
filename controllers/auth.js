@@ -90,7 +90,7 @@ exports.logout = asyncHandler(async (req, res, next) => {
   res
     .status(200)
     .cookie('token', 'none', {
-      expires: new Date(Date.now() + 1000),
+      expires: new Date(Date.now() + 10),
       httpOnly: true
     })
     .json({
