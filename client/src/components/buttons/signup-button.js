@@ -8,15 +8,15 @@ const SignUpButton = props => {
 
   if (!props.isAuthorized) {
     return (
-      <Button
+      <span
         color='link'
-        className='text-light'
+        className='text-light hover-pointer mr-2 hover-underline'
         onClick={() => {
-          dispatch(openModal('signup'));
+          dispatch(openModal('signup', 'submit', 'Cancel'));
         }}
       >
         Sign up
-      </Button>
+      </span>
     );
   } else {
     return '';

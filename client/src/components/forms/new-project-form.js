@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Form, FormGroup, Label, Input } from 'reactstrap';
-import FormFooter from './form-footer';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createNewProject } from '../../actions/project-actions';
 
 const NewProjectForm = props => {
@@ -9,15 +8,16 @@ const NewProjectForm = props => {
   const [key, setKey] = useState('');
   const [description, setDescription] = useState('');
   const dispatch = useDispatch();
+  const type = useSelector(state => state.modal.type);
 
   const submit = e => {
     e.preventDefault();
     dispatch(createNewProject({ name, key, description }));
   };
 
-  if (props.isOpen) {
+  if (type === 'project') {
     return (
-      <Form className='d-flex flex-column' onSubmit={submit}>
+      <Form className='d-flex flex-column' id={type} onSubmit={submit}>
         <FormGroup>
           <Label for='name'>Project Name:</Label>
           <Input
@@ -48,7 +48,6 @@ const NewProjectForm = props => {
             onChange={e => setDescription(e.target.value)}
           />
         </FormGroup>
-        <FormFooter />
       </Form>
     );
   } else return '';

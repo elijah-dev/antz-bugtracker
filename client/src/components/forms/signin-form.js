@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
-import FormFooter from './form-footer';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { signIn } from '../../actions/auth-actions';
 
 const SignInForm = props => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
+  const type = useSelector(state => state.modal.type);
 
   const submit = e => {
     e.preventDefault();
     dispatch(signIn({ login, password }));
   };
 
-  if (props.type === 'signin') {
+  if (type === 'signin') {
     return (
-      <Form className='d-flex flex-column' onSubmit={submit}>
+      <Form className='d-flex flex-column' id={type} onSubmit={submit}>
         <FormGroup>
           <Label for='login'>Login:</Label>
           <Input
@@ -37,7 +37,6 @@ const SignInForm = props => {
             onChange={e => setPassword(e.target.value)}
           />
         </FormGroup>
-        <FormFooter />
       </Form>
     );
   } else return '';

@@ -1,9 +1,9 @@
 import { OPEN_MODAL, CLOSE_MODAL } from './index';
 
-export const openModal = type => {
+export const openModal = (type, button, close) => {
   return {
     type: OPEN_MODAL,
-    payload: type
+    payload: { type, button, close }
   };
 };
 

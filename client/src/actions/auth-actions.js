@@ -30,11 +30,9 @@ export const getCurrentUser = () => dispatch => {
   axios
     .get('/api/user', config)
     .then(res => {
-      console.log('success');
       dispatch(authSuccess(res.data));
     })
     .catch(error => {
-      console.log('failure');
       dispatch(authFailure(error.response.data));
     });
 };

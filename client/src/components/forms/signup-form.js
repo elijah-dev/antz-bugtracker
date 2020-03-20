@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
-import CloseModalButton from '../buttons/close-modal-button';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { signUp } from '../../actions/auth-actions';
 
 const SignUpForm = props => {
@@ -12,6 +11,7 @@ const SignUpForm = props => {
   const [password, setPassword] = useState('');
   const [files, setFile] = useState(0);
   const dispatch = useDispatch();
+  const type = useSelector(state => state.modal.type);
 
   const submit = e => {
     e.preventDefault();
@@ -28,9 +28,9 @@ const SignUpForm = props => {
     dispatch(signUp(formData));
   };
 
-  if (props.type === 'signup') {
+  if (type === 'signup') {
     return (
-      <Form className='d-flex flex-column' onSubmit={submit}>
+      <Form className='d-flex flex-column' id={type} onSubmit={submit}>
         <div className='d-flex justify-content-between'>
           <FormGroup>
             <Label for='first-name'>First name:</Label>
@@ -98,13 +98,6 @@ const SignUpForm = props => {
             onChange={e => setFile(e.target.files)}
           />
         </FormGroup>
-
-        <div className='d-flex justify-content-between'>
-          <CloseModalButton />
-          <Button type='submit' color='primary'>
-            Submit
-          </Button>
-        </div>
       </Form>
     );
   } else return '';

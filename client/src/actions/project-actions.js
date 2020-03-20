@@ -5,6 +5,7 @@ import {
   SET_CURRENT_PROJECT_FAILURE
 } from './index';
 import { closeModal } from './modal-actions';
+import { getProjects } from './projects-actions';
 import Cookies from 'js-cookie';
 
 const setCurrentProjectFetching = () => {
@@ -46,8 +47,9 @@ export const createNewProject = data => dispatch => {
     .post('/api/project/create', data)
     .then(res => {
       dispatch(closeModal());
-      Cookies.set('project', res.data._id);
       dispatch(setCurrentProjectSuccess(res.data));
+      Cookies.set('project', res.data._id);
+      dispatch(getProjects());
     })
     .catch(error => {
       dispatch(setCurrentProjectFailure(error.response.data));

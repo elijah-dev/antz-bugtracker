@@ -4,21 +4,25 @@ import { useSelector } from 'react-redux';
 import SignInForm from './forms/signin-form';
 import SignUpForm from './forms/signup-form';
 import NewProjectForm from './forms/new-project-form';
-import { Spinner } from 'reactstrap';
+import TeamList from './lists/team-list';
+import CandidatesList from './lists/candidates-list';
+import ModalFooter from './modal-footer';
 
-const AuthPopup = () => {
-  const modal = useSelector(state => state.modal);
+const Popup = () => {
+  const isOpen = useSelector(state => state.modal.isOpen);
 
   return (
-    <Modal isOpen={modal.isOpen}>
+    <Modal isOpen={isOpen}>
       <ModalBody>
-        {modal.type === 'loading' ? <Spinner /> : ''}
-        <NewProjectForm isOpen={modal.type === 'project'} />
-        <SignInForm type={modal.type} />
-        <SignUpForm type={modal.type} />
+        <CandidatesList />
+        <TeamList />
+        <NewProjectForm />
+        <SignInForm />
+        <SignUpForm />
+        <ModalFooter />
       </ModalBody>
     </Modal>
   );
 };
 
-export default AuthPopup;
+export default Popup;

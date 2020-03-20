@@ -14,7 +14,7 @@ import SignOutButton from '../buttons/signout-button';
 
 const Navuser = () => {
   const isAuthorized = useSelector(state => state.currentUser.isAuthorized);
-
+  const avatar = useSelector(state => state.currentUser.data.avatar);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const toggle = () => {
     if (isAuthorized) {
@@ -28,7 +28,7 @@ const Navuser = () => {
         <UserName isAuthorized={isAuthorized} />
         <SignInButton isAuthorized={isAuthorized} />
         <SignUpButton isAuthorized={isAuthorized} />
-        <Avatar size={50} />
+        <Avatar avatar={avatar} size={50} />
       </DropdownToggle>
       <DropdownMenu right>
         <SignOutButton isAuthorized={isAuthorized} />

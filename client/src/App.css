@@ -2,10 +2,19 @@
   cursor: pointer;
 }
 
+.hover-underline:hover {
+  text-decoration: underline;
+}
+
 #navlogo {
   font-family: 'Kaushan Script', cursive;
 }
 
 #logotext {
   font-size: 2rem;
+}
+
+#projects-dropdown-toggle {
+  min-width: 12rem;
+  /* height: 1.1rem; */
 }

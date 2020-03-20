@@ -7,12 +7,18 @@ const NewProjectButton = props => {
   const dispatch = useDispatch();
 
   const openForm = () => {
-    dispatch(openModal('project'));
+    dispatch(openModal('project', 'submit', 'Cancel'));
   };
 
   return (
-    <DropdownItem className={props.active ? '' : 'disabled'} onClick={openForm}>
-      New Project
+    <DropdownItem
+      className={`${
+        props.active ? 'bg-primary text-white ' : 'disabled '
+      }d-flex justify-content-between align-items-center`}
+      onClick={openForm}
+    >
+      <span>New Project</span>
+      <img src='add.svg' height='15px' width='15px' />
     </DropdownItem>
   );
 };

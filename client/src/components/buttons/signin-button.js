@@ -8,15 +8,15 @@ const SignInButton = props => {
 
   if (!props.isAuthorized) {
     return (
-      <Button
+      <span
         color='link'
-        className='text-light'
+        className='text-light hover-pointer mr-2 hover-underline'
         onClick={() => {
-          dispatch(openModal('signin'));
+          dispatch(openModal('signin', 'submit', 'Cancel'));
         }}
       >
         Sign in
-      </Button>
+      </span>
     );
   } else {
     return '';

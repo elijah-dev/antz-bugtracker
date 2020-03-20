@@ -9,14 +9,15 @@ import Cookies from 'js-cookie';
 const ProjectsList = () => {
   const projects = useSelector(state => state.userProjects.data);
   const isAuthorized = useSelector(state => state.currentUser.isAuthorized);
+  const userFetching = useSelector(state => state.currentUser.userFetching);
   const cookie = Cookies.get('project');
 
   const dispatch = useDispatch();
   useEffect(() => {
-    if (isAuthorized && cookie) {
+    if (!userFetching) {
       dispatch(setCurrentProject(cookie));
     }
-  }, [isAuthorized, cookie, dispatch]);
+  }, [isAuthorized, dispatch]);
 
   const projectsList = projects.map(project => {
     return (
@@ -32,7 +33,11 @@ const ProjectsList = () => {
   });
 
   return (
-    <DropdownMenu>
+    <DropdownMenu
+      right
+      className='border border-primary'
+      style={{ width: '14.4rem' }}
+    >
       {projects.length < 1 ? (
         <DropdownItem disabled>No projects found</DropdownItem>
       ) : (

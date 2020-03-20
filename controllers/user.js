@@ -37,8 +37,6 @@ exports.getAllUsers = asyncHandler(async (req, res, next) => {
     fullUsers.push(user);
   }
 
-  console.log(fullUsers);
-
   // if (!user) {
   //   return next(
   //     new ErrorResponse(`User not found with an id of ${req.user._id}`, 404)

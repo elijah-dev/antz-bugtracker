@@ -1,25 +1,22 @@
 import React from 'react';
 import { Button } from 'reactstrap';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { closeModal } from '../../actions/modal-actions';
 
 const CloseModalButton = props => {
   const dispatch = useDispatch();
+  const text = useSelector(state => state.modal.close);
 
-  if (!props.isAuthorized) {
-    return (
-      <Button
-        color='danger'
-        onClick={() => {
-          dispatch(closeModal());
-        }}
-      >
-        Cancel
-      </Button>
-    );
-  } else {
-    return '';
-  }
+  return (
+    <Button
+      color='danger'
+      onClick={() => {
+        dispatch(closeModal());
+      }}
+    >
+      {text}
+    </Button>
+  );
 };
 
 export default CloseModalButton;

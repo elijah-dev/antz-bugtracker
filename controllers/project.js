@@ -26,9 +26,7 @@ exports.getAllProjects = asyncHandler(async (req, res, next) => {
 // @desc      Get single project
 // @route     GET /api/project/:id
 exports.getSingleProject = asyncHandler(async (req, res, next) => {
-  const project = await Project.findById(req.params.id)
-    .populate('issues')
-    .populate('team');
+  const project = await Project.findById(req.params.id);
 
   if (!project) {
     return next(

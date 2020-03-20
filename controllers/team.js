@@ -1,10 +1,8 @@
-const express = require('express');
 const Project = require('../models/Project');
 const User = require('../models/User');
 const PermissionList = require('../models/PermissonList');
 const asyncHandler = require('../midleware/async-handler');
 const ErrorResponse = require('../utils/error-response');
-const _ = require('lodash');
 
 // @desc      Add or remove user to the project
 // @route     PUT /api/project/:id/team
@@ -88,15 +86,46 @@ exports.manageTeam = asyncHandler(async (req, res, next) => {
 // @desc      Get team members of the project
 // @route     GET /api/project/:id/team
 exports.getMembers = asyncHandler(async (req, res, next) => {
-  const members = await PermissionList.find({
-    ...req.query,
-    project: req.params.id
-  })
-    .select('-project -_id')
-    .populate('user');
+  const members = await Project.findById(req.params.id)
+    .select('-_id -id -name -key -description')
+    .populate('team')
+    .lean();
+  let team = [];
+
+  if (!req.query.invite) {
+    for (let member of members.team) {
+      const permissions = await PermissionList.findOne({
+        ...req.query,
+        user: member._id,
+        project: req.params.id
+      })
+        .select('-user -project')
+        .lean();
+      if (permissions) {
+        member = { ...member, ...permissions };
+        team.push(member);
+      }
+    }
+  }
+
+  if (req.query.invite === 'true') {
+    let candidates = [];
+    const users = await User.find().lean();
+    for (let user of users) {
+      for (let member of members.team) {
+        if (!(member._id.toString() === user._id.toString())) {
+          candidates.push(user);
+        }
+      }
+    }
+    return res.status(200).json({
+      success: true,
+      candidates
+    });
+  }
 
   res.status(200).json({
     success: true,
-    data: members
+    data: team
   });
 });

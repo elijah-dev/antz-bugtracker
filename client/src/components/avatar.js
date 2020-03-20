@@ -3,12 +3,10 @@ import { Image, Transformation } from 'cloudinary-react';
 import { useSelector } from 'react-redux';
 
 const Avatar = props => {
-  const avatar = useSelector(state => state.currentUser.data.avatar);
-
   return (
     <Image
       className='rounded-circle'
-      publicId={avatar ? avatar : 'placeholder'}
+      publicId={props.avatar ? props.avatar : 'placeholder'}
     >
       <Transformation
         height={props.size}
