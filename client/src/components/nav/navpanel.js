@@ -8,8 +8,7 @@ import TeamButton from '../buttons/team-button';
 const Navpanel = () => {
   return (
     <Navbar
-      className='d-flex justify-content-between bg-primary'
-      dark
+      className='d-flex justify-content-between bg-primary mb-3'
       expand='md'
     >
       <div className='d-flex align-items-center'>

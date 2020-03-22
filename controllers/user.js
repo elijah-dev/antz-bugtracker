@@ -25,7 +25,9 @@ exports.getCurrentUser = asyncHandler(async (req, res, next) => {
 // @desc      Find all users
 // @route     GET /api/user/all
 exports.getAllUsers = asyncHandler(async (req, res, next) => {
-  const users = await User.find().lean();
+  const users = await User.find()
+    .select('+login +password')
+    .lean();
   let fullUsers = [];
 
   for (let user of users) {

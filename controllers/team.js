@@ -31,13 +31,13 @@ exports.manageTeam = asyncHandler(async (req, res, next) => {
     );
   }
 
+  let permissions = await PermissionList.findOne({
+    project: project._id,
+    user: user._id
+  });
+
   switch (req.query.action) {
     case 'add': {
-      let permissions = await PermissionList.findOne({
-        project: project._id,
-        user: user._id
-      });
-
       if (permissions) {
         return next(
           new ErrorResponse(
@@ -56,19 +56,22 @@ exports.manageTeam = asyncHandler(async (req, res, next) => {
         return next(new ErrorResponse(`Could not create permission list`, 500));
       }
 
+      project.team.push(user._id);
+
+      await project.save();
+
       break;
     }
     case 'remove': {
-      const permissions = await PermissionList.findOne({
-        project: project._id,
-        user: user._id
-      });
-
       if (!permissions) {
         return next(new ErrorResponse(`Could not find permission list`, 500));
       }
 
       await permissions.remove();
+
+      project.team.splice(project.team.indexOf(user._id), 1);
+
+      await project.save();
 
       break;
     }
@@ -78,8 +81,7 @@ exports.manageTeam = asyncHandler(async (req, res, next) => {
   }
 
   res.status(201).json({
-    success: true,
-    data: { ...project, ...permissions, ...user }
+    success: true
   });
 });
 
@@ -99,7 +101,7 @@ exports.getMembers = asyncHandler(async (req, res, next) => {
         user: member._id,
         project: req.params.id
       })
-        .select('-user -project')
+        .select('-_id -user -project')
         .lean();
       if (permissions) {
         member = { ...member, ...permissions };
@@ -112,11 +114,14 @@ exports.getMembers = asyncHandler(async (req, res, next) => {
     let candidates = [];
     const users = await User.find().lean();
     for (let user of users) {
+      let inTeam = false;
       for (let member of members.team) {
-        if (!(member._id.toString() === user._id.toString())) {
-          candidates.push(user);
+        if (member._id.toString() === user._id.toString()) {
+          inTeam = true;
+          break;
         }
       }
+      if (!inTeam) candidates.push(user);
     }
     return res.status(200).json({
       success: true,

@@ -13,9 +13,16 @@ const options = {
 // @route     GET /api/project/
 exports.getAllProjects = asyncHandler(async (req, res, next) => {
   const projects = await Project.find();
-  const userProjects = projects.filter(project =>
-    project.team.includes(req.user._id)
-  );
+
+  if (req.user) {
+    const userProjects = projects.filter(project =>
+      project.team.includes(req.user._id)
+    );
+    return res.status(200).json({
+      success: true,
+      data: userProjects
+    });
+  }
 
   res.status(200).json({
     success: true,
@@ -32,6 +39,12 @@ exports.getSingleProject = asyncHandler(async (req, res, next) => {
     return next(
       new ErrorResponse(`Project not found with an id of ${req.params.id}`, 400)
     );
+  }
+
+  const isMember = project.team.includes(req.user._id);
+
+  if (!isMember) {
+    return next(new ErrorResponse(`Wrong cookie`, 400));
   }
 
   const permissions = await PermissionList.findOne({

@@ -5,6 +5,7 @@ import {
   GET_TEAM_FAILURE,
   GET_TEAM_CANDIDATES_SUCCESS
 } from './index';
+import { openModal } from './modal-actions';
 
 const getTeamFetching = () => {
   return {
@@ -16,13 +17,6 @@ const getTeamSuccess = team => {
   return {
     type: GET_TEAM_SUCCESS,
     payload: team
-  };
-};
-
-const getTeamCandidatesSuccess = candidates => {
-  return {
-    type: GET_TEAM_SUCCESS,
-    payload: candidates
   };
 };
 
@@ -38,13 +32,22 @@ export const getTeam = (project, query) => dispatch => {
   axios
     .get(`/api/project/${project}/team${query}`)
     .then(res => {
-      if (query === '?invite=true') {
-        console.log('sdfsdfs');
-        return dispatch(getTeamCandidatesSuccess(res.data));
-      }
       dispatch(getTeamSuccess(res.data));
     })
     .catch(error => {
       dispatch(getTeamFailure(error.response.data));
+    });
+};
+
+export const manageTeam = (project, query) => dispatch => {
+  dispatch(openModal('loading'));
+  dispatch(getTeamFetching());
+  axios
+    .put(`/api/project/${project}/team${query}`)
+    .then(res => {
+      dispatch(openModal('team', 'invite', 'Close'));
+    })
+    .catch(error => {
+      dispatch(getTeamSuccess(error.response.data));
     });
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from 'reactstrap';
 import { useSelector } from 'react-redux';
 
-const SubmitButton = props => {
+const SubmitButton = () => {
   const button = useSelector(state => state.modal.button);
   const type = useSelector(state => state.modal.type);
 

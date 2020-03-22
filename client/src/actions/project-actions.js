@@ -37,6 +37,9 @@ export const setCurrentProject = id => dispatch => {
       dispatch(setCurrentProjectSuccess(res.data));
     })
     .catch(error => {
+      if (error.response.data.error === 'Wrong cookie') {
+        Cookies.remove('project');
+      }
       dispatch(setCurrentProjectFailure(error.response.data));
     });
 };

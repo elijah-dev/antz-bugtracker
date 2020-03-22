@@ -5,14 +5,16 @@ import { openModal } from '../../actions/modal-actions';
 
 const InviteButton = () => {
   const button = useSelector(state => state.modal.button);
+  const permissions = useSelector(state => state.currentProject.permissions);
   const dispatch = useDispatch();
 
   if (button === 'invite') {
     return (
       <Button
         color='info'
+        disabled={!permissions.canAddTeamMembers}
         onClick={() => {
-          dispatch(openModal('candidates', 'ok', 'Cancel'));
+          dispatch(openModal('candidates', 'submit', 'Cancel'));
         }}
       >
         Add members

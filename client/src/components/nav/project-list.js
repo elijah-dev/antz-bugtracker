@@ -14,8 +14,10 @@ const ProjectsList = () => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!userFetching) {
-      dispatch(setCurrentProject(cookie));
+    if (cookie) {
+      if (!userFetching) {
+        dispatch(setCurrentProject(cookie));
+      }
     }
   }, [isAuthorized, dispatch]);
 

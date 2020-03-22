@@ -14,15 +14,11 @@ const initialState = {
 const teamReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_TEAM_FETCHING: {
-      state = { ...state, fetching: true };
+      state = { ...state, candidates: [], fetching: true };
       return state;
     }
     case GET_TEAM_SUCCESS: {
       state = { ...state, ...action.payload, fetching: false };
-      return state;
-    }
-    case GET_TEAM_CANDIDATES_SUCCESS: {
-      state = { ...state, ...action.payload.data, fetching: false };
       return state;
     }
     case GET_TEAM_FAILURE: {
