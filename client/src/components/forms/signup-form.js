@@ -15,7 +15,6 @@ const SignUpForm = props => {
 
   const submit = e => {
     e.preventDefault();
-
     let formData = new FormData();
     formData.set('firstName', firstName);
     formData.set('secondName', secondName);
@@ -25,7 +24,6 @@ const SignUpForm = props => {
     for (const key of Object.keys(files)) {
       formData.append('file', files[key]);
     }
-    dispatch(signUp(formData));
   };
 
   if (type === 'signup') {

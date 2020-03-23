@@ -40,11 +40,11 @@ const IssueSchema = new mongoose.Schema(
     },
     priority: {
       type: String,
-      enum: ['blocker', 'critical', 'major', 'minor', 'trivial']
+      enum: ['Critical', 'Major', 'Minor', 'Trivial']
     },
     severity: {
       type: String,
-      enum: ['blocker', 'critical', 'major', 'minor', 'trivial']
+      enum: ['Critical', 'Major', 'Minor', 'Trivial']
     },
     description: {
       type: String

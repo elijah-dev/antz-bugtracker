@@ -4,6 +4,7 @@ import Navlogo from './navlogo';
 import Navuser from './navuser';
 import ProjectsDropdown from './projects-dropdown';
 import TeamButton from '../buttons/team-button';
+import IssueButton from '../buttons/new-issue-button';
 
 const Navpanel = () => {
   return (
@@ -15,6 +16,7 @@ const Navpanel = () => {
         <Navlogo />
         <ProjectsDropdown />
         <TeamButton />
+        <IssueButton />
       </div>
       <Navuser />
     </Navbar>
