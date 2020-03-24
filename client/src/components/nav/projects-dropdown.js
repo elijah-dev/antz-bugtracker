@@ -7,10 +7,11 @@ import ProjectsList from './project-list';
 const ProjectsDropdown = () => {
   const user = useSelector(state => state.currentUser.isAuthorized);
   const currentProject = useSelector(state => state.currentProject.data);
+  const isAuthorized = useSelector(state => state.currentUser.isAuthorized);
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getProjects());
+    if (isAuthorized) dispatch(getProjects());
   }, [user, dispatch]);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);

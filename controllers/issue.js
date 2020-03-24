@@ -16,11 +16,12 @@ const url = require('url');
 // @desc      Get issues
 // @route     GET /api/project/:id/issue
 exports.getIssues = asyncHandler(async (req, res, next) => {
-  console.log(req.query);
   const issues = await Issue.find({
     project: req.params.projectId,
     ...req.query
-  });
+  })
+    .populate('submittedBy')
+    .populate('assignedTo');
 
   res.status(200).json({
     success: true,
@@ -81,7 +82,7 @@ exports.createIssue = asyncHandler(async (req, res, next) => {
       console.log(
         `File ${file.filename} uploaded on ${attachment.created_at}`.green
       );
-      attachments.push(attachment.url);
+      attachments.push(attachment.public_id);
     }
 
     for (let path of filePaths) {
@@ -106,8 +107,7 @@ exports.createIssue = asyncHandler(async (req, res, next) => {
   }
 
   res.status(201).json({
-    success: true,
-    data: issue
+    success: true
   });
 });
 
@@ -134,14 +134,23 @@ exports.updateIssue = asyncHandler(async (req, res, next) => {
   });
 });
 
-// @desc      Delete bootcamp
+// @desc      Delete issue
 // @route     DELETE /api/issue/:id
 exports.deleteIssue = asyncHandler(async (req, res, next) => {
-  if (!user.admin) {
-    return next(new ErrorResponse(`Only admin can access this route`, 404));
-  }
+  // if (!req.user.admin) {
+  //   return next(new ErrorResponse(`Only admin can access this route`, 404));
+  // }
 
   const issue = await Issue.findById(req.params.id);
+
+  if (!issue) {
+    return next(
+      new ErrorResponse(
+        `Issue with an ID of ${req.params.id} was not found`,
+        404
+      )
+    );
+  }
 
   for (let path of issue.attachments) {
     let type = 'image';
@@ -163,15 +172,6 @@ exports.deleteIssue = asyncHandler(async (req, res, next) => {
 
   const delf = await deleteCloudinaryFolder(folder[0]);
   console.log(delf);
-
-  if (!issue) {
-    return next(
-      new ErrorResponse(
-        `Issue with an ID of ${req.params.id} was not found`,
-        404
-      )
-    );
-  }
 
   await issue.remove();
 

@@ -1,7 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Container, Row, Col, Badge } from 'reactstrap';
+import { getIssues } from '../../actions/issue-actions';
+import IssueColumn from './column';
 
 const Board = () => {
+  const dispatch = useDispatch();
+  const project = useSelector(state => state.currentProject.data._id);
+  const isAuthorized = useSelector(state => state.currentUser.isAuthorized);
+
+  useEffect(() => {
+    if (isAuthorized) dispatch(getIssues(project, ''));
+  }, [project]);
+
   return (
     <Container className='board'>
       <Row className='title-row'>
@@ -27,10 +38,10 @@ const Board = () => {
         </Col>
       </Row>
       <Row className='issue-row'>
-        <Col className='issue-col'>open</Col>
-        <Col className='issue-col '>asigned</Col>
-        <Col className='issue-col'>in progress</Col>
-        <Col className='issue-col'>resolved</Col>
+        <IssueColumn status='open' />
+        <IssueColumn status='open' assigned={true} />
+        <IssueColumn status='in progress' />
+        <IssueColumn status='resolved' />
       </Row>
     </Container>
   );

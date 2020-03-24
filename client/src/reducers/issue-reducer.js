@@ -1,26 +1,26 @@
 import {
-  SUBMIT_ISSUE_FETCHING,
-  SUBMIT_ISSUE_SUCCESS,
-  SUBMIT_ISSUE_FAILURE
+  GET_ISSUES_FETCHING,
+  GET_ISSUES_SUCCESS,
+  GET_ISSUES_FAILURE
 } from '../actions/index';
 
 const initialState = {
   fetching: false,
-  data: {}
+  data: []
 };
 
 const issueReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SUBMIT_ISSUE_FETCHING: {
+    case GET_ISSUES_FETCHING: {
       state = { fetching: true, ...state };
       return state;
     }
-    case SUBMIT_ISSUE_SUCCESS: {
+    case GET_ISSUES_SUCCESS: {
       state = { ...state, ...action.payload, fetching: false };
       return state;
     }
-    case SUBMIT_ISSUE_FAILURE: {
-      state = { ...state, ...action.payload, fetching: false };
+    case GET_ISSUES_FAILURE: {
+      state = { ...state, data: [], ...action.payload, fetching: false };
       return state;
     }
     default: {

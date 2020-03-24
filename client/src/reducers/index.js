@@ -12,7 +12,7 @@ const rootReducer = combineReducers({
   currentUser: authReducer,
   modal: modalReducer,
   team: teamReducer,
-  issue: issueReducer
+  issues: issueReducer
 });
 
 export default rootReducer;

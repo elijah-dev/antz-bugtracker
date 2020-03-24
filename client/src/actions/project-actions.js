@@ -21,7 +21,7 @@ export const setCurrentProjectSuccess = project => {
   };
 };
 
-const setCurrentProjectFailure = error => {
+export const setCurrentProjectFailure = error => {
   return {
     type: SET_CURRENT_PROJECT_FAILURE,
     payload: error

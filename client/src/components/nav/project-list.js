@@ -9,13 +9,12 @@ import Cookies from 'js-cookie';
 const ProjectsList = () => {
   const projects = useSelector(state => state.userProjects.data);
   const isAuthorized = useSelector(state => state.currentUser.isAuthorized);
-  const userFetching = useSelector(state => state.currentUser.userFetching);
   const cookie = Cookies.get('project');
 
   const dispatch = useDispatch();
   useEffect(() => {
     if (cookie) {
-      if (!userFetching) {
+      if (isAuthorized) {
         dispatch(setCurrentProject(cookie));
       }
     }

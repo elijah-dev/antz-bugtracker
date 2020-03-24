@@ -1,40 +1,52 @@
 import axios from 'axios';
 import {
-  SUBMIT_ISSUE_FETCHING,
-  SUBMIT_ISSUE_SUCCESS,
-  SUBMIT_ISSUE_FAILURE
+  GET_ISSUES_FETCHING,
+  GET_ISSUES_SUCCESS,
+  GET_ISSUES_FAILURE
 } from './index';
 import { closeModal } from './modal-actions';
 
-const setSubmitIssueFetching = () => {
+const getIssuesFetching = () => {
   return {
-    type: SUBMIT_ISSUE_FETCHING
+    type: GET_ISSUES_FETCHING
   };
 };
 
-const setSubmitIssueSuccess = issue => {
+const getIssuesSuccess = issue => {
   return {
-    type: SUBMIT_ISSUE_SUCCESS,
+    type: GET_ISSUES_SUCCESS,
     payload: issue
   };
 };
 
-const setSubmitIssueFailure = error => {
+const getIssuesFailure = error => {
   return {
-    type: SUBMIT_ISSUE_FAILURE,
+    type: GET_ISSUES_FAILURE,
     payload: error
   };
 };
 
+export const getIssues = (project, query) => dispatch => {
+  dispatch(getIssuesFetching());
+  axios
+    .get(`/api/project/${project}/issue/${query}`)
+    .then(res => {
+      dispatch(getIssuesSuccess(res.data));
+    })
+    .catch(error => {
+      dispatch(getIssuesFailure(error.response.data));
+    });
+};
+
 export const submitIssue = (project, data) => dispatch => {
-  dispatch(setSubmitIssueFetching());
+  dispatch(getIssuesFetching());
   axios
     .post(`/api/project/${project}/issue/create`, data)
     .then(res => {
-      // dispatch(closeModal());
-      dispatch(setSubmitIssueSuccess(res.data));
+      dispatch(closeModal());
+      dispatch(getIssues(project, ''));
     })
     .catch(error => {
-      dispatch(setSubmitIssueFailure(error.response.data));
+      dispatch(getIssuesFailure(error.response.data));
     });
 };

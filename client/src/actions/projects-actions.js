@@ -18,7 +18,7 @@ const getProjectsSuccess = projects => {
   };
 };
 
-const getProjectsFailure = error => {
+export const getProjectsFailure = error => {
   return {
     type: GET_PROJECTS_FAILURE,
     payload: error
