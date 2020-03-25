@@ -1,21 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { ListGroup, ListGroupItem } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { getTeam } from '../../actions/team-actions';
-import Avatar from '../avatar';
-import CickButton from '../buttons/cick-button';
+import Avatar from '../common/Avatar';
+import CickButton from './CickButton';
 
 const TeamList = props => {
   const type = useSelector(state => state.modal.type);
-  const project = useSelector(state => state.currentProject.data._id);
   const team = useSelector(state => state.team.data);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (project) {
-      if (type === 'team') dispatch(getTeam(project, ''));
-    }
-  }, [project, type, dispatch]);
 
   const members = team.map(member => {
     return (

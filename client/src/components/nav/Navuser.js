@@ -6,11 +6,11 @@ import {
   DropdownMenu,
   DropdownItem
 } from 'reactstrap';
-import Avatar from '../avatar';
-import UserName from '../username';
-import SignInButton from '../buttons/signin-button';
-import SignUpButton from '../buttons/signup-button';
-import SignOutButton from '../buttons/signout-button';
+import Avatar from '../common/Avatar';
+import UserName from './Username';
+import SignInButton from './SignInButton';
+import SignUpButton from './SignUpButton';
+import SignOutButton from './SignOutButton';
 
 const Navuser = () => {
   const isAuthorized = useSelector(state => state.currentUser.isAuthorized);

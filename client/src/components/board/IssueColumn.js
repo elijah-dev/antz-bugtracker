@@ -12,7 +12,7 @@ import {
   UncontrolledTooltip
 } from 'reactstrap';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import Avatar from '../avatar';
+import Avatar from '../common/Avatar';
 import { openModal } from '../../actions/modal-actions';
 
 const IssueColumn = props => {

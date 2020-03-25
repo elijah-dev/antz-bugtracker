@@ -20,7 +20,7 @@ const getTeamSuccess = team => {
   };
 };
 
-const getTeamFailure = error => {
+export const getTeamFailure = error => {
   return {
     type: GET_TEAM_FAILURE,
     payload: error

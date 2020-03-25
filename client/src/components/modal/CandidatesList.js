@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ListGroup, ListGroupItem, Form, Input } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { getTeam, manageTeam } from '../../actions/team-actions';
-import Avatar from '../avatar';
+import Avatar from '../common/Avatar';
 
 const CandidatesList = () => {
   const type = useSelector(state => state.modal.type);

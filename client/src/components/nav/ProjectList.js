@@ -1,24 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { DropdownMenu, DropdownItem } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentProject } from '../../actions/project-actions';
-import NewProjectButton from '../buttons/new-project-button';
-
-import Cookies from 'js-cookie';
+import NewProjectButton from './NewProjectButton';
 
 const ProjectsList = () => {
   const projects = useSelector(state => state.userProjects.data);
   const isAuthorized = useSelector(state => state.currentUser.isAuthorized);
-  const cookie = Cookies.get('project');
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    if (cookie) {
-      if (isAuthorized) {
-        dispatch(setCurrentProject(cookie));
-      }
-    }
-  }, [isAuthorized, dispatch]);
 
   const projectsList = projects.map(project => {
     return (

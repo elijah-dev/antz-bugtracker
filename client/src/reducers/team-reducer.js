@@ -22,7 +22,7 @@ const teamReducer = (state = initialState, action) => {
       return state;
     }
     case GET_TEAM_FAILURE: {
-      state = { data: [], ...action.payload, fetching: false };
+      state = { data: [], candidates: [], ...action.payload, fetching: false };
       return state;
     }
     default:

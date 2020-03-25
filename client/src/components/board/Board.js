@@ -1,18 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
 import { Container, Row, Col, Badge } from 'reactstrap';
-import { getIssues } from '../../actions/issue-actions';
-import IssueColumn from './column';
+import IssueColumn from './IssueColumn';
 
 const Board = () => {
-  const dispatch = useDispatch();
-  const project = useSelector(state => state.currentProject.data._id);
-  const isAuthorized = useSelector(state => state.currentUser.isAuthorized);
-
-  useEffect(() => {
-    if (isAuthorized) dispatch(getIssues(project, ''));
-  }, [project]);
-
   return (
     <Container className='board'>
       <Row className='title-row'>

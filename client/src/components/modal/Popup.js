@@ -1,14 +1,14 @@
 import React from 'react';
 import { Modal, ModalBody } from 'reactstrap';
 import { useSelector } from 'react-redux';
-import SignInForm from './forms/signin-form';
-import SignUpForm from './forms/signup-form';
-import NewProjectForm from './forms/new-project-form';
-import TeamList from './lists/team-list';
-import CandidatesList from './lists/candidates-list';
-import IssueForm from './forms/issue-form';
-import ModalFooter from './modal-footer';
-import IssueTable from './lists/issue-table';
+import SignInForm from './SignInForm';
+import SignUpForm from './SignUpForm';
+import NewProjectForm from './NewProjectForm';
+import TeamList from './TeamList';
+import CandidatesList from './CandidatesList';
+import IssueForm from './IssueForm';
+import ModalFooter from './ModalFooter';
+import IssueTable from './IssueTable';
 
 const Popup = () => {
   const isOpen = useSelector(state => state.modal.isOpen);

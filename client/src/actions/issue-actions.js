@@ -19,7 +19,7 @@ const getIssuesSuccess = issue => {
   };
 };
 
-const getIssuesFailure = error => {
+export const getIssuesFailure = error => {
   return {
     type: GET_ISSUES_FAILURE,
     payload: error

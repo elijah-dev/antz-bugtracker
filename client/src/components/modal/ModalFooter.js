@@ -1,7 +1,7 @@
 import React from 'react';
-import SubmitButton from './buttons/submit-button';
-import CloseModalButton from './buttons/close-modal-button';
-import InviteButton from './buttons/invite-button';
+import SubmitButton from './SubmitButton';
+import CloseModalButton from './CloseModalButton';
+import InviteButton from './InviteButton';
 
 const ModalFooter = props => {
   return (
