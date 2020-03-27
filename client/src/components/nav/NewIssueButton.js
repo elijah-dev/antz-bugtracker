@@ -13,7 +13,16 @@ const IssueButton = () => {
     <Button
       className='border border-white bg-primary m-1'
       disabled={!isActive}
-      onClick={() => dispatch(openModal('issue', 'submit', 'Cancel'))}
+      onClick={() =>
+        dispatch(
+          openModal({
+            type: 'issue',
+            closeBtnText: 'Cancel',
+            okBtnType: 'submit',
+            okBtnText: 'Submit issue'
+          })
+        )
+      }
     >
       New Issue
     </Button>

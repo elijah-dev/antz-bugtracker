@@ -47,7 +47,7 @@ const IssueForm = props => {
     <div className='thumb' key={file.name}>
       <div className='thumb-inner'>
         {file.type.match(/image.+/) ? (
-          <img src={file.preview} className='prev' />
+          <img src={file.preview} className='prev' alt='' />
         ) : (
           <video src={file.preview} className='prev' />
         )}
@@ -64,9 +64,8 @@ const IssueForm = props => {
 
   const submit = e => {
     e.preventDefault();
-    console.log(files);
     let formData = new FormData();
-    formData.set('type', issueType);
+    formData.set('issueType', issueType);
     formData.set('summary', summary);
     formData.set('severity', severity);
     formData.set('priority', priority);
@@ -92,7 +91,7 @@ const IssueForm = props => {
             type='text'
             name='summary'
             id='summary'
-            //   required
+            required
             onChange={e => setSummary(e.target.value)}
           />
         </FormGroup>
@@ -122,7 +121,7 @@ const IssueForm = props => {
                   Functional
                 </DropdownItem>
                 <DropdownItem onClick={e => setIssueType(e.target.innerHTML)}>
-                  UI
+                  UI / UX
                 </DropdownItem>
                 <DropdownItem onClick={e => setIssueType(e.target.innerHTML)}>
                   Improvement

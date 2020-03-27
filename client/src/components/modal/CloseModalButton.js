@@ -5,7 +5,7 @@ import { closeModal } from '../../actions/modal-actions';
 
 const CloseModalButton = props => {
   const dispatch = useDispatch();
-  const text = useSelector(state => state.modal.close);
+  const text = useSelector(state => state.modal.closeBtnText);
 
   return (
     <Button

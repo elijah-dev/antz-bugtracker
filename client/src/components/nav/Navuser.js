@@ -8,8 +8,6 @@ import {
 } from 'reactstrap';
 import Avatar from '../common/Avatar';
 import UserName from './Username';
-import SignInButton from './SignInButton';
-import SignUpButton from './SignUpButton';
 import SignOutButton from './SignOutButton';
 
 const Navuser = () => {
@@ -25,15 +23,17 @@ const Navuser = () => {
   return (
     <Dropdown isOpen={dropdownOpen} toggle={toggle} className='hover-pointer'>
       <DropdownToggle color='primary' className='d-flex align-items-center'>
-        <UserName isAuthorized={isAuthorized} />
-        <SignInButton isAuthorized={isAuthorized} />
-        <SignUpButton isAuthorized={isAuthorized} />
-        <Avatar avatar={avatar} size={50} />
+        {isAuthorized ? (
+          <UserName isAuthorized={isAuthorized} />
+        ) : (
+          <span className='mr-2'>Signed out</span>
+        )}
+        <Avatar publicId={avatar} size={50} />
       </DropdownToggle>
       <DropdownMenu right>
-        <SignOutButton isAuthorized={isAuthorized} />
-
+        <DropdownItem>Account</DropdownItem>
         <DropdownItem divider />
+        <SignOutButton isAuthorized={isAuthorized} />
       </DropdownMenu>
     </Dropdown>
   );

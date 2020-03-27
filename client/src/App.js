@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navpanel from './components/nav/Navpanel';
 import Popup from './components/modal/Popup';
+import SecondaryPopup from './components/secondary-modal/SecondaryPopup';
 import Board from './components/board/Board';
 import InitialDispatcher from './InitialDispatcher';
 
@@ -11,6 +12,7 @@ function App() {
     <div className='App'>
       <InitialDispatcher />
       <Popup />
+      <SecondaryPopup />
       <Navpanel />
       <Board />
     </div>

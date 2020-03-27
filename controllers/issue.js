@@ -66,8 +66,19 @@ exports.createIssue = asyncHandler(async (req, res, next) => {
   // Construct issue key
   const issueKey = `${project.key}-${issues.length + 1}`;
 
+  // Constructing body
+  body.project = projectId;
+  body.key = issueKey;
+  body.submittedBy = req.user._id;
+  body.atachments = [];
+
+  const issue = await Issue.create(body);
+
+  if (!issue) {
+    return next(new ErrorResponse(`Could not create issue`, 500));
+  }
+
   // Handle attachments
-  let attachments = [];
   if (req.files) {
     const files = req.files;
     const filePaths = files.map(
@@ -82,7 +93,11 @@ exports.createIssue = asyncHandler(async (req, res, next) => {
       console.log(
         `File ${file.filename} uploaded on ${attachment.created_at}`.green
       );
-      attachments.push(attachment.public_id);
+      issue.attachments.push({
+        publicId: attachment.public_id,
+        mimeType: file.mimetype
+      });
+      issue.save();
     }
 
     for (let path of filePaths) {
@@ -92,18 +107,6 @@ exports.createIssue = asyncHandler(async (req, res, next) => {
         console.log(`Temporary file removed`.blue);
       }
     }
-  }
-
-  // Constructing body
-  body.project = projectId;
-  body.key = issueKey;
-  body.submittedBy = req.user._id;
-  body.attachments = attachments;
-
-  const issue = await Issue.create(body);
-
-  if (!issue) {
-    return next(new ErrorResponse(`Could not create issue`, 500));
   }
 
   res.status(201).json({

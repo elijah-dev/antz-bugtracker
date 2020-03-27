@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { openModal } from '../../actions/modal-actions';
 
 const InviteButton = () => {
-  const button = useSelector(state => state.modal.button);
+  const button = useSelector(state => state.modal.okBtnType);
+  const text = useSelector(state => state.modal.okBtnText);
   const permissions = useSelector(state => state.currentProject.permissions);
   const dispatch = useDispatch();
 
@@ -14,10 +15,17 @@ const InviteButton = () => {
         color='info'
         disabled={!permissions.canAddTeamMembers}
         onClick={() => {
-          dispatch(openModal('candidates', 'submit', 'Cancel'));
+          dispatch(
+            openModal({
+              type: 'candidates',
+              closeBtnText: 'Close',
+              okBtnType: 'submit',
+              okBtnText: 'Invite'
+            })
+          );
         }}
       >
-        Add members
+        {text}
       </Button>
     );
   }

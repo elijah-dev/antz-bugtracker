@@ -22,7 +22,7 @@ const CickButton = props => {
         dispatch(manageTeam(project, `?user=${props.user}&action=remove`));
       }}
     >
-      <img src='remove-user.svg' height='20px' width='20px' />
+      <img src='remove-user.svg' height='20px' width='20px' alt='' />
     </Button>
   );
 };

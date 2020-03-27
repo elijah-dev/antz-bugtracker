@@ -1,10 +1,5 @@
 import axios from 'axios';
-import {
-  GET_TEAM_FETCHING,
-  GET_TEAM_SUCCESS,
-  GET_TEAM_FAILURE,
-  GET_TEAM_CANDIDATES_SUCCESS
-} from './index';
+import { GET_TEAM_FETCHING, GET_TEAM_SUCCESS, GET_TEAM_FAILURE } from './index';
 import { openModal } from './modal-actions';
 
 const getTeamFetching = () => {

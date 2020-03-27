@@ -1,8 +1,7 @@
 import {
   GET_TEAM_FETCHING,
   GET_TEAM_SUCCESS,
-  GET_TEAM_FAILURE,
-  GET_TEAM_CANDIDATES_SUCCESS
+  GET_TEAM_FAILURE
 } from '../actions';
 
 const initialState = {

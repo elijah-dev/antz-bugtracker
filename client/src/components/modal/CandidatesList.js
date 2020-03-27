@@ -32,7 +32,7 @@ const CandidatesList = () => {
       >
         {' '}
         <div>
-          <Avatar avatar={candidate.avatar} size={40} />
+          <Avatar publicId={candidate.avatar} size={40} />
           <span className='ml-2'>
             {candidate.firstName} {candidate.secondName}, {candidate.role}
           </span>

@@ -7,7 +7,14 @@ const NewProjectButton = props => {
   const dispatch = useDispatch();
 
   const openForm = () => {
-    dispatch(openModal('project', 'submit', 'Cancel'));
+    dispatch(
+      openModal({
+        type: 'project',
+        closeBtnText: 'Cancel',
+        okBtnType: 'submit',
+        okBtnText: 'Create Project'
+      })
+    );
   };
 
   return (
@@ -18,7 +25,7 @@ const NewProjectButton = props => {
       onClick={openForm}
     >
       <span>New Project</span>
-      <img src='add.svg' height='15px' width='15px' />
+      <img src='add.svg' height='15px' width='15px' alt='' />
     </DropdownItem>
   );
 };

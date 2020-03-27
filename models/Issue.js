@@ -1,5 +1,10 @@
 const mongoose = require('mongoose');
 
+const Attachment = new mongoose.Schema({
+  publicId: { type: String },
+  mimeType: { type: String }
+});
+
 const IssueSchema = new mongoose.Schema(
   {
     project: {
@@ -10,7 +15,7 @@ const IssueSchema = new mongoose.Schema(
       type: String,
       unique: true
     },
-    type: {
+    issueType: {
       type: String
     },
     affectVersion: {
@@ -19,7 +24,14 @@ const IssueSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['open', 'closed', 'in progress', 'resolved', 'reopened'],
+      enum: [
+        'open',
+        'closed',
+        'assigned',
+        'in progress',
+        'resolved',
+        'reopened'
+      ],
       default: 'open'
     },
     resolution: {
@@ -61,9 +73,12 @@ const IssueSchema = new mongoose.Schema(
     environment: {
       type: String
     },
-    attachment: {
-      type: String
-    },
+    attachments: [
+      {
+        publicId: String,
+        mimeType: String
+      }
+    ],
     assignedTo: {
       type: mongoose.Schema.ObjectId,
       ref: 'User'
@@ -75,8 +90,7 @@ const IssueSchema = new mongoose.Schema(
     createdAt: {
       type: Date,
       default: Date.now
-    },
-    attachments: [{ type: String }]
+    }
   },
 
   {

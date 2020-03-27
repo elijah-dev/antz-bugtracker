@@ -6,11 +6,9 @@ import { getProjects } from './actions/projects-actions';
 import { setCurrentProject } from './actions/project-actions';
 import { getIssues } from './actions/issue-actions';
 import { getTeam } from './actions/team-actions';
-import { closeModal } from './actions/modal-actions';
 
 const InitialDispatcher = () => {
   const dispatch = useDispatch();
-  useEffect(() => dispatch(closeModal()), [dispatch]);
 
   // Authorize and set current user
   useEffect(() => dispatch(getCurrentUser()), [dispatch]);

@@ -1,8 +1,6 @@
 import React from 'react';
 import { Modal, ModalBody } from 'reactstrap';
 import { useSelector } from 'react-redux';
-import SignInForm from './SignInForm';
-import SignUpForm from './SignUpForm';
 import NewProjectForm from './NewProjectForm';
 import TeamList from './TeamList';
 import CandidatesList from './CandidatesList';
@@ -20,8 +18,6 @@ const Popup = () => {
         <CandidatesList />
         <TeamList />
         <NewProjectForm />
-        <SignInForm />
-        <SignUpForm />
         <IssueForm />
         <IssueTable />
         <ModalFooter />

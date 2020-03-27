@@ -4,7 +4,6 @@ import { setCurrentProjectFailure } from './project-actions';
 import { getProjectsFailure } from './projects-actions';
 import { getIssuesFailure } from './issue-actions';
 import { getTeamFailure } from './team-actions';
-import { closeModal } from './modal-actions';
 
 const authFetching = () => {
   return {
@@ -46,7 +45,6 @@ export const signIn = credentials => dispatch => {
   axios
     .post('/api/auth/login', credentials)
     .then(res => {
-      dispatch(closeModal());
       dispatch(authSuccess(res.data));
     })
     .catch(error => {
@@ -59,7 +57,6 @@ export const signUp = data => dispatch => {
   axios
     .post('/api/auth/register', data)
     .then(res => {
-      dispatch(closeModal());
       dispatch(authSuccess(res.data));
     })
     .catch(error => {

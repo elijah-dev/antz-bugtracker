@@ -12,7 +12,7 @@ const Navpanel = () => {
       className='d-flex justify-content-between bg-primary mb-3'
       expand='md'
     >
-      <div className='d-flex align-items-center'>
+      <div className='d-flex align-items-center flex-wrap'>
         <Navlogo />
         <ProjectsDropdown />
         <TeamButton />

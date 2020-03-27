@@ -22,8 +22,8 @@ const authReducer = (state = initialState, action) => {
       return state;
     }
     case AUTH_FAILURE: {
-      state = {};
       state = {
+        ...state,
         data: {},
         ...action.payload,
         fetching: false,

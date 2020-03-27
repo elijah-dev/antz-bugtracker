@@ -11,7 +11,16 @@ const TeamButton = () => {
     <Button
       className='border border-white bg-primary m-1'
       disabled={!project}
-      onClick={() => dispatch(openModal('team', 'invite', 'Close'))}
+      onClick={() =>
+        dispatch(
+          openModal({
+            type: 'team',
+            closeBtnText: 'Close',
+            okBtnType: 'invite',
+            okBtnText: 'Invite'
+          })
+        )
+      }
     >
       Team
     </Button>
