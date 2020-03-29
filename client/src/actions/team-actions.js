@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { GET_TEAM_FETCHING, GET_TEAM_SUCCESS, GET_TEAM_FAILURE } from './index';
-import { openModal } from './modal-actions';
+import { openModal, closeSecondaryModal } from './modal-actions';
 
 const getTeamFetching = () => {
   return {
@@ -22,10 +22,10 @@ export const getTeamFailure = error => {
   };
 };
 
-export const getTeam = (project, query) => dispatch => {
+export const getTeam = project => dispatch => {
   dispatch(getTeamFetching());
   axios
-    .get(`/api/project/${project}/team${query}`)
+    .get(`/api/project/${project}/team`)
     .then(res => {
       dispatch(getTeamSuccess(res.data));
     })
@@ -34,13 +34,14 @@ export const getTeam = (project, query) => dispatch => {
     });
 };
 
-export const manageTeam = (project, query) => dispatch => {
+export const manageTeam = (project, user, action) => dispatch => {
+  dispatch(closeSecondaryModal());
   dispatch(openModal('loading'));
   dispatch(getTeamFetching());
   axios
-    .put(`/api/project/${project}/team${query}`)
+    .put(`/api/project/${project}/team?user=${user}&action=${action}`)
     .then(res => {
-      dispatch(openModal('team', 'invite', 'Close'));
+      dispatch(getTeam(project));
     })
     .catch(error => {
       dispatch(getTeamSuccess(error.response.data));

@@ -2,10 +2,11 @@ import React from 'react';
 import { ListGroup, ListGroupItem } from 'reactstrap';
 import { useSelector } from 'react-redux';
 import Avatar from '../common/Avatar';
-import CickButton from './CickButton';
+import MemberButton from './MemberButton';
+import UserPermsButton from './UserPermsButton';
 import FetchSpinner from '../common/FetchSpinner';
 
-const TeamList = props => {
+const TeamList = () => {
   const type = useSelector(state => state.modal.type);
   const team = useSelector(state => state.team.data);
   const fetching = useSelector(state => state.team.fetching);
@@ -21,11 +22,14 @@ const TeamList = props => {
           <div>
             <Avatar publicId={member.avatar} size={40} />
             <span className='ml-2'>
-              {member.firstName} {member.secondName}, {member.role}
+              {member.firstName} {member.secondName}{' '}
+              <span className='text-secondary'>{member.role}</span>
             </span>
           </div>
-          <div>
-            <CickButton className user={member._id} />
+          <div className='d-flex align-items-center justify-content-between'>
+            <UserPermsButton member={member} />
+            <span className='m-1'></span>
+            <MemberButton member={member} action='remove' />
           </div>
         </ListGroupItem>
       );

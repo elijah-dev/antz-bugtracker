@@ -19,8 +19,8 @@ const InviteButton = () => {
             openModal({
               type: 'candidates',
               closeBtnText: 'Close',
-              okBtnType: 'submit',
-              okBtnText: 'Invite'
+              okBtnType: 'back',
+              okBtnText: 'Back'
             })
           );
         }}

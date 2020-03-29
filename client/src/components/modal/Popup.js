@@ -1,12 +1,14 @@
 import React from 'react';
-import { Modal, ModalBody } from 'reactstrap';
+import { Modal, ModalBody, ModalFooter } from 'reactstrap';
 import { useSelector } from 'react-redux';
 import NewProjectForm from './NewProjectForm';
 import TeamList from './TeamList';
 import CandidatesList from './CandidatesList';
 import IssueForm from './IssueForm';
-import ModalFooter from './ModalFooter';
 import IssueTable from './IssueTable';
+import SubmitButton from './SubmitButton';
+import CloseModalButton from './CloseModalButton';
+import InviteButton from './InviteButton';
 
 const Popup = () => {
   const isOpen = useSelector(state => state.modal.isOpen);
@@ -20,8 +22,12 @@ const Popup = () => {
         <NewProjectForm />
         <IssueForm />
         <IssueTable />
-        <ModalFooter />
       </ModalBody>
+      <ModalFooter className='d-flex justify-content-between'>
+        <CloseModalButton />
+        <SubmitButton />
+        <InviteButton />
+      </ModalFooter>
     </Modal>
   );
 };

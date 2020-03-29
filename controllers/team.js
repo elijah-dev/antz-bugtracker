@@ -94,43 +94,36 @@ exports.getMembers = asyncHandler(async (req, res, next) => {
     .lean();
   let team = [];
 
-  if (!req.query.invite) {
-    for (let member of members.team) {
-      const permissions = await PermissionList.findOne({
-        ...req.query,
-        user: member._id,
-        project: req.params.id
-      })
-        .select('-_id -user -project')
-        .lean();
-      if (permissions) {
-        member = { ...member, ...permissions };
-        team.push(member);
-      }
+  for (let member of members.team) {
+    const permissions = await PermissionList.findOne({
+      ...req.query,
+      user: member._id,
+      project: req.params.id
+    })
+      .select('-_id -user -project')
+      .lean();
+    if (permissions) {
+      member = { ...member, ...permissions };
+      team.push(member);
     }
   }
 
-  if (req.query.invite === 'true') {
-    let candidates = [];
-    const users = await User.find().lean();
-    for (let user of users) {
-      let inTeam = false;
-      for (let member of members.team) {
-        if (member._id.toString() === user._id.toString()) {
-          inTeam = true;
-          break;
-        }
+  let candidates = [];
+  const users = await User.find().lean();
+  for (let user of users) {
+    let inTeam = false;
+    for (let member of members.team) {
+      if (member._id.toString() === user._id.toString()) {
+        inTeam = true;
+        break;
       }
-      if (!inTeam) candidates.push(user);
     }
-    return res.status(200).json({
-      success: true,
-      candidates
-    });
+    if (!inTeam) candidates.push(user);
   }
 
   res.status(200).json({
     success: true,
-    data: team
+    data: team,
+    candidates
   });
 });
