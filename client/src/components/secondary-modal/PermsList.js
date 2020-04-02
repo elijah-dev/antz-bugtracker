@@ -1,63 +1,58 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ListGroup, ListGroupItem, Button } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { closeSecondaryModal } from '../../actions/modal-actions';
+import { changePermissions } from '../../actions/team-actions';
+import FetchSpinner from '../common/FetchSpinner';
 
 const PermsList = () => {
   const dispatch = useDispatch();
   const type = useSelector(state => state.secondaryModal.type);
-  const canAddTeamMembers = useSelector(
-    state => state.secondaryModal.canAddTeamMembers
-  );
-  const canRemoveTeamMembers = useSelector(
-    state => state.secondaryModal.canRemoveTeamMembers
-  );
-  const canChangePermissions = useSelector(
-    state => state.secondaryModal.canChangePermissions
-  );
-  const canAssignIssues = useSelector(
-    state => state.secondaryModal.canAssignIssues
-  );
-  const canSubmitIssues = useSelector(
-    state => state.secondaryModal.canSubmitIssues
-  );
-  const canSetResolution = useSelector(
-    state => state.secondaryModal.canSetResolution
-  );
-  const canSetStatus = useSelector(state => state.secondaryModal.canSetStatus);
+  const loading = useSelector(state => state.secondaryModal.loading);
+  const project = useSelector(state => state.currentProject.data._id);
+  const member = useSelector(state => state.secondaryModal.member);
+  let user = '';
+  let permissions = '';
+  if (member) {
+    user = member._id;
+    permissions = member.permissions;
+  }
+
+  const [perms, setPerms] = useState(permissions);
+  let permlist = '';
+
+  if (permissions) {
+    permlist = Object.entries(perms).map(([key, value]) => {
+      return (
+        <ListGroupItem
+          key={key}
+          className='d-flex justify-content-between align-items-center'
+        >
+          <div>{key}</div>
+          <div className='d-flex align-items-center'>
+            <label className='switch-wrap'>
+              <input
+                type='checkbox'
+                id={key}
+                name={key}
+                defaultChecked={value}
+                onChange={() => {
+                  setPerms({ ...perms, [key]: !value });
+                }}
+              />
+              <div className='switch'></div>
+            </label>
+          </div>
+        </ListGroupItem>
+      );
+    });
+  }
 
   if (type === 'perms') {
     return (
       <div>
-        <ListGroup>
-          <ListGroupItem>
-            <div>Can invite team members</div>
-          </ListGroupItem>
-
-          <ListGroupItem>
-            <div>Can remove team members</div>
-          </ListGroupItem>
-
-          <ListGroupItem>
-            <div>Can change user permissions</div>
-          </ListGroupItem>
-
-          <ListGroupItem>
-            <div>Can change user permissions</div>
-          </ListGroupItem>
-
-          <ListGroupItem>
-            <div>Can assign issues</div>
-          </ListGroupItem>
-
-          <ListGroupItem>
-            <div>Can resolve issues</div>
-          </ListGroupItem>
-
-          <ListGroupItem>
-            <div>Can close issues</div>
-          </ListGroupItem>
-        </ListGroup>
+        {loading ? <FetchSpinner /> : ''}
+        <ListGroup>{permlist}</ListGroup>
 
         <div className='d-flex justify-content-between mt-4'>
           <Button
@@ -67,7 +62,12 @@ const PermsList = () => {
             Cancel
           </Button>
 
-          <Button color='success'>Confirm</Button>
+          <Button
+            color='success'
+            onClick={() => dispatch(changePermissions(project, user, perms))}
+          >
+            Confirm
+          </Button>
         </div>
       </div>
     );

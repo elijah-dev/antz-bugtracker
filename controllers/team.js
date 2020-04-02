@@ -100,10 +100,11 @@ exports.getMembers = asyncHandler(async (req, res, next) => {
       user: member._id,
       project: req.params.id
     })
-      .select('-_id -user -project')
+      .select('-_id -user -project -__v')
       .lean();
     if (permissions) {
-      member = { ...member, ...permissions };
+      // member = { ...member, ...permissions };
+      member.permissions = permissions;
       team.push(member);
     }
   }
@@ -125,5 +126,28 @@ exports.getMembers = asyncHandler(async (req, res, next) => {
     success: true,
     data: team,
     candidates
+  });
+});
+
+// @desc      Change permissions
+// @route     PUT /api/project/:id/permissions
+exports.changePermissions = asyncHandler(async (req, res, next) => {
+  if (!req.query.user) {
+    return next(new ErrorResponse(`No user id provided`, 400));
+  }
+
+  const permissions = await PermissionList.findOne({
+    project: req.params.id,
+    user: req.query.user
+  }).lean();
+
+  if (!permissions) {
+    return next(new ErrorResponse(`Could not find permission list`, 500));
+  }
+
+  await PermissionList.findByIdAndUpdate(permissions._id, req.body);
+
+  res.status(200).json({
+    success: true
   });
 });

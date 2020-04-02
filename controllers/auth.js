@@ -63,7 +63,7 @@ exports.login = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({ login }).select('+password');
 
   if (!user) {
-    return next(new ErrorResponse(`Login ${login} is invalid`, 401));
+    return next(new ErrorResponse(`Login is invalid`, 401));
   }
 
   const isPasswordCorrect = await user.comparePasswords(password);

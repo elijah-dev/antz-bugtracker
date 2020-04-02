@@ -12,7 +12,7 @@ const initialState = {
 const issueReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_ISSUES_FETCHING: {
-      state = { fetching: true, ...state };
+      state = { ...state, fetching: true };
       return state;
     }
     case GET_ISSUES_SUCCESS: {

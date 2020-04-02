@@ -15,7 +15,7 @@ const AssigneePicker = props => {
   const team = useSelector(state => state.team.data);
   const project = useSelector(state => state.currentProject.data._id);
   const isActive = useSelector(
-    state => state.currentProject.permissions.canAssignUsers
+    state => state.currentProject.permissions.canAssignIssues
   );
   const [assigneeName, setAssigneeName] = useState('');
   const [assigneeRole, setAssigneeRole] = useState('');
@@ -34,7 +34,7 @@ const AssigneePicker = props => {
   };
 
   const assignees = team.map(member => {
-    if (member.canSetResolution) {
+    if (member.permissions.canSetResolution) {
       return (
         <DropdownItem
           key={member._id}

@@ -13,6 +13,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useDropzone } from 'react-dropzone';
 import { submitIssue } from '../../actions/issue-actions';
+import FetchSpinner from '../common/FetchSpinner';
 
 const IssueForm = props => {
   const [issueType, setIssueType] = useState('Functional');
@@ -28,6 +29,7 @@ const IssueForm = props => {
   const dispatch = useDispatch();
   const formType = useSelector(state => state.modal.type);
   const project = useSelector(state => state.currentProject.data._id);
+  const fetching = useSelector(state => state.issues.fetching);
 
   const [files, setFiles] = useState([]);
   const { getRootProps, getInputProps } = useDropzone({
@@ -84,6 +86,7 @@ const IssueForm = props => {
   if (formType === 'issue') {
     return (
       <Form className='d-flex flex-column' id={formType} onSubmit={submit}>
+        {fetching ? <FetchSpinner /> : ''}
         {/* summary */}
         <FormGroup>
           <Label for='summary'>Summary:</Label>

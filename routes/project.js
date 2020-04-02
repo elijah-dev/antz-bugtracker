@@ -6,7 +6,11 @@ const {
   updateProject,
   deleteProject
 } = require('../controllers/project');
-const { manageTeam, getMembers } = require('../controllers/team');
+const {
+  manageTeam,
+  getMembers,
+  changePermissions
+} = require('../controllers/team');
 
 const router = express.Router();
 
@@ -22,6 +26,8 @@ router
   .route('/:id/team')
   .get(getMembers)
   .put(manageTeam);
+
+router.route('/:id/permissions').put(changePermissions);
 
 router
   .route('/:id')

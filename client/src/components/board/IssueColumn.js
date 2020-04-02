@@ -5,7 +5,6 @@ import {
   Badge,
   Card,
   CardBody,
-  CardText,
   CardHeader,
   CardFooter,
   Button,
@@ -38,7 +37,6 @@ const IssueColumn = props => {
               </UncontrolledTooltip>
 
               <span>
-                <span className='text-secondary font-sm'>S </span>
                 <Badge
                   id='sev-badge'
                   color={
@@ -56,7 +54,6 @@ const IssueColumn = props => {
                 Priority
               </UncontrolledTooltip>
               <span>
-                <span className='text-secondary font-sm'>P </span>
                 <Badge
                   id='prio-badge'
                   color={
@@ -71,8 +68,27 @@ const IssueColumn = props => {
               </span>
             </CardHeader>
 
-            <CardBody>
-              <CardText>{issue.summary}</CardText>
+            <CardBody className='pt-2 pb-2'>
+              <div className='mb-2'>{issue.summary}</div>
+              {issue.assignedTo ? (
+                <div className='d-flex align-items-center justify-content-between'>
+                  <span>
+                    <Avatar publicId={issue.assignedTo.avatar} size='25' />
+                    <span className='font-sm ml-2'>
+                      {issue.assignedTo.firstName} {issue.assignedTo.secondName}
+                    </span>
+                  </span>
+                  {issue.resolution !== 'unresolved' ? (
+                    <Badge size='sm' color='success' pill>
+                      {issue.resolution}
+                    </Badge>
+                  ) : (
+                    ''
+                  )}
+                </div>
+              ) : (
+                ''
+              )}
             </CardBody>
 
             <CardFooter className='d-flex justify-content-between align-items-center'>
@@ -100,7 +116,7 @@ const IssueColumn = props => {
                   )
                 }
               >
-                Open
+                Details
               </Button>
             </CardFooter>
           </Card>

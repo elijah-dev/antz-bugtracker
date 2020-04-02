@@ -43,7 +43,6 @@ export const getIssues = (project, query) => dispatch => {
 };
 
 export const submitIssue = (project, data) => dispatch => {
-  dispatch(openSecondaryModal({ type: 'loading' }));
   dispatch(getIssuesFetching());
   axios
     .post(`/api/project/${project}/issue/create`, data)

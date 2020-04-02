@@ -40,7 +40,13 @@ const TeamList = () => {
   if (type === 'team') {
     return (
       <ListGroup className='mb-2'>
-        {fetching ? <FetchSpinner /> : ''}
+        {fetching ? (
+          <div style={{ height: '10rem' }}>
+            <FetchSpinner />
+          </div>
+        ) : (
+          ''
+        )}
         {members}
       </ListGroup>
     );

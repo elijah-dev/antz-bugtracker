@@ -5,6 +5,7 @@ import parse from 'html-react-parser';
 import Attachment from './Attachment';
 import AssignElement from './AssignElement';
 import Avatar from '../common/Avatar';
+import ResolveDropdown from './ResolveDropdown';
 
 const IssueTable = () => {
   const type = useSelector(state => state.modal.type);
@@ -102,6 +103,8 @@ const IssueTable = () => {
             <th scope='row'>Assigned to</th>
             <AssignElement issue={issue} />
           </tr>
+
+          <ResolveDropdown issue={issue} />
 
           <tr>
             <td colSpan='2'>

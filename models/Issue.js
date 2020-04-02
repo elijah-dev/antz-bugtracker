@@ -39,7 +39,7 @@ const IssueSchema = new mongoose.Schema(
       enum: [
         'unresolved',
         'fixed',
-        "won't fix",
+        'wont fix',
         'duplicate',
         'incomplete',
         'cannot reproduce',

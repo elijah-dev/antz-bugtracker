@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Form, FormGroup, Label, Input } from 'reactstrap';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { signIn } from '../../actions/auth-actions';
 
 const SignInForm = props => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
+  const error = useSelector(state => state.currentUser.error);
 
   const submit = e => {
     e.preventDefault();
@@ -16,7 +17,14 @@ const SignInForm = props => {
   return (
     <Form className='d-flex flex-column' id='signin' onSubmit={submit}>
       <FormGroup>
-        <Label for='login'>Login:</Label>
+        <Label for='login'>
+          Login:
+          <span className='text-danger ml-2'>
+            {error === 'Login is invalid'
+              ? 'User with this login not found'
+              : ''}
+          </span>
+        </Label>
         <Input
           type='text'
           name='login'
@@ -27,6 +35,9 @@ const SignInForm = props => {
       </FormGroup>
       <FormGroup>
         <Label for='password'>Password:</Label>
+        <span className='text-danger ml-2'>
+          {error === 'Incorrect password' ? 'Wrong password' : ''}
+        </span>
         <Input
           type='password'
           name='password'

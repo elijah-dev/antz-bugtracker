@@ -16,6 +16,7 @@ const authReducer = (state = initialState, action) => {
       state = {
         ...state,
         ...action.payload,
+        error: '',
         fetching: false,
         isAuthorized: true
       };
