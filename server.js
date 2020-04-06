@@ -28,8 +28,9 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Setting up static directory
-// app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'client/build')));
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'client/build')));
+}
 
 // Setting up routes
 // Auth routes
