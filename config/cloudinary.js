@@ -1,11 +1,17 @@
 const cloudinary = require('cloudinary').v2;
+const streamifier = require('streamifier');
 
 function uploadToCloudinary(file, options) {
   return new Promise((resolve, reject) => {
-    cloudinary.uploader.upload(file, options, (err, res) => {
-      if (err) return reject(err);
-      return resolve(res);
-    });
+    let cld_upload_stream = cloudinary.uploader.upload_stream(
+      options,
+      (err, res) => {
+        if (err) return reject(err);
+        return resolve(res);
+      }
+    );
+
+    streamifier.createReadStream(file.buffer).pipe(cld_upload_stream);
   });
 }
 
@@ -30,5 +36,5 @@ function deleteCloudinaryFolder(file, options) {
 module.exports = {
   uploadToCloudinary,
   deleteFromCloudinary,
-  deleteCloudinaryFolder
+  deleteCloudinaryFolder,
 };

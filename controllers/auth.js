@@ -4,14 +4,14 @@ const asyncHandler = require('../midleware/async-handler');
 const ErrorResponse = require('../utils/error-response');
 const {
   uploadToCloudinary,
-  deleteFromCloudinary
+  deleteFromCloudinary,
 } = require('../config/cloudinary');
 const cloudinary = require('cloudinary').v2;
 const fs = require('fs');
 const path = require('path');
 const options = {
   expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-  httpOnly: true
+  httpOnly: true,
 };
 
 // @desc      Register new user
@@ -21,11 +21,9 @@ exports.register = asyncHandler(async (req, res, next) => {
   // console.log(req.body);
   // res.status(200);
 
-  const image = path.join(__dirname, '..', 'tmp', req.files[0].filename);
+  // const image = path.join(__dirname, '..', 'tmp', req.files[0].filename);
 
-  const avatar = await uploadToCloudinary(image, { folder: 'avatars' });
-
-  fs.unlinkSync(image);
+  const avatar = await uploadToCloudinary(req.files[0], { folder: 'avatars' });
 
   req.body.avatar = avatar.public_id;
 
@@ -37,14 +35,11 @@ exports.register = asyncHandler(async (req, res, next) => {
 
   const token = user.signJwt();
 
-  res
-    .status(201)
-    .cookie('token', token, options)
-    .json({
-      success: true,
-      data: user,
-      token
-    });
+  res.status(201).cookie('token', token, options).json({
+    success: true,
+    data: user,
+    token,
+  });
 });
 
 // @desc      Login existing user
@@ -74,14 +69,11 @@ exports.login = asyncHandler(async (req, res, next) => {
 
   const token = user.signJwt();
 
-  res
-    .status(200)
-    .cookie('token', token, options)
-    .json({
-      success: true,
-      data: user,
-      token
-    });
+  res.status(200).cookie('token', token, options).json({
+    success: true,
+    data: user,
+    token,
+  });
 });
 
 // @desc      Logout by clearing cookie
@@ -91,9 +83,9 @@ exports.logout = asyncHandler(async (req, res, next) => {
     .status(200)
     .cookie('token', 'none', {
       expires: new Date(Date.now() + 10),
-      httpOnly: true
+      httpOnly: true,
     })
     .json({
-      success: true
+      success: true,
     });
 });

@@ -6,7 +6,7 @@ const ErrorResponse = require('../utils/error-response');
 const {
   uploadToCloudinary,
   deleteFromCloudinary,
-  deleteCloudinaryFolder
+  deleteCloudinaryFolder,
 } = require('../config/cloudinary');
 const cloudinary = require('cloudinary').v2;
 const path = require('path');
@@ -18,7 +18,7 @@ const url = require('url');
 exports.getIssues = asyncHandler(async (req, res, next) => {
   const issues = await Issue.find({
     project: req.params.projectId,
-    ...req.query
+    ...req.query,
   })
     .populate('submittedBy')
     .populate('assignedTo');
@@ -26,7 +26,7 @@ exports.getIssues = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     issues: issues.length,
-    data: issues
+    data: issues,
   });
 });
 
@@ -43,7 +43,7 @@ exports.getSingleIssue = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    data: issue
+    data: issue,
   });
 });
 
@@ -80,37 +80,34 @@ exports.createIssue = asyncHandler(async (req, res, next) => {
 
   // Handle attachments
   if (req.files) {
+    console.log(req.files);
     const files = req.files;
-    const filePaths = files.map(
-      file => (file = path.join(__dirname, '..', 'tmp', file.filename))
-    );
 
     for (let file of files) {
-      let attachment = await uploadToCloudinary(file.path, {
-        resource_type: 'auto',
-        folder: `issue-attachments/${issueKey}`
+      let attachment = await uploadToCloudinary(file, {
+        folder: `issue-attachments/${issueKey}`,
       });
       console.log(
         `File ${file.filename} uploaded on ${attachment.created_at}`.green
       );
       issue.attachments.push({
         publicId: attachment.public_id,
-        mimeType: file.mimetype
+        mimeType: file.mimetype,
       });
       issue.save();
     }
 
-    for (let path of filePaths) {
-      fs.unlinkSync(path);
-      let f = fs.existsSync(path);
-      if (!f) {
-        console.log(`Temporary file removed`.blue);
-      }
-    }
+    // for (let path of filePaths) {
+    //   fs.unlinkSync(path);
+    //   let f = fs.existsSync(path);
+    //   if (!f) {
+    //     console.log(`Temporary file removed`.blue);
+    //   }
+    // }
   }
 
   res.status(201).json({
-    success: true
+    success: true,
   });
 });
 
@@ -119,7 +116,7 @@ exports.createIssue = asyncHandler(async (req, res, next) => {
 exports.updateIssue = asyncHandler(async (req, res, next) => {
   const issue = await Issue.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
-    runValidators: true
+    runValidators: true,
   });
 
   if (!issue) {
@@ -133,7 +130,7 @@ exports.updateIssue = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    data: issue
+    data: issue,
   });
 });
 
@@ -180,6 +177,6 @@ exports.deleteIssue = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    data: issue
+    data: issue,
   });
 });
