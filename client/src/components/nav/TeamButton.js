@@ -9,7 +9,7 @@ const TeamButton = () => {
 
   return (
     <Button
-      className='border border-white bg-primary m-1'
+      className='border border-primary bg-primary m-1'
       disabled={!project}
       onClick={() =>
         dispatch(
@@ -20,8 +20,7 @@ const TeamButton = () => {
             okBtnText: 'Invite'
           })
         )
-      }
-    >
+      }>
       Team
     </Button>
   );

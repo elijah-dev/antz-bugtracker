@@ -11,7 +11,7 @@ const IssueButton = () => {
 
   return (
     <Button
-      className='border border-white bg-primary m-1'
+      className='m-1 border border-white bg-primary'
       disabled={!isActive}
       onClick={() =>
         dispatch(
@@ -22,9 +22,8 @@ const IssueButton = () => {
             okBtnText: 'Submit issue'
           })
         )
-      }
-    >
-      New Issue
+      }>
+      <span>Submit Issue</span>
     </Button>
   );
 };

@@ -3,15 +3,16 @@ import { Container, Row, Col, Badge } from 'reactstrap';
 import IssueColumn from './IssueColumn';
 import { useSelector } from 'react-redux';
 import AuthContainer from './AuthContainer';
+import ProjectPicker from './ProjectPicker';
 
 const Board = () => {
-  const isAuthorized = useSelector((state) => state.currentUser.isAuthorized);
-  const project = useSelector((state) => state.currentProject.data);
+  const isAuthorized = useSelector(state => state.currentUser.isAuthorized);
+  const project = useSelector(state => state.currentProject.data);
 
   if (isAuthorized) {
     if (project.name) {
       return (
-        <Container className='board'>
+        <Container className='board container-lg'>
           <Row className='title-row'>
             <Col>
               <h4>
@@ -43,13 +44,7 @@ const Board = () => {
         </Container>
       );
     }
-    return (
-      <Container
-        className='d-flex align-items-center justify-content-center'
-        style={{ height: '60%' }}>
-        <h1 style={{ opacity: 0.6 }}>No project chosen</h1>
-      </Container>
-    );
+    return <ProjectPicker />;
   }
   return <AuthContainer />;
 };

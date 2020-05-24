@@ -8,7 +8,8 @@ import {
   CardHeader,
   CardFooter,
   Button,
-  UncontrolledTooltip
+  UncontrolledTooltip,
+  Container
 } from 'reactstrap';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import Avatar from '../common/Avatar';
@@ -44,8 +45,7 @@ const IssueColumn = props => {
                       ? 'danger'
                       : 'warning'
                   }
-                  pill
-                >
+                  pill>
                   {issue.severity}
                 </Badge>
               </span>
@@ -61,8 +61,7 @@ const IssueColumn = props => {
                       ? 'danger'
                       : 'warning'
                   }
-                  pill
-                >
+                  pill>
                   {issue.priority}
                 </Badge>
               </span>
@@ -114,8 +113,7 @@ const IssueColumn = props => {
                       okBtnType: 'none'
                     })
                   )
-                }
-              >
+                }>
                 Details
               </Button>
             </CardFooter>
