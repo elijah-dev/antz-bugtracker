@@ -23,12 +23,21 @@ const PermsList = () => {
 
   if (permissions) {
     permlist = Object.entries(perms).map(([key, value]) => {
+      if (key === 'canEditProject') return null;
+
       return (
         <ListGroupItem
           key={key}
-          className='d-flex justify-content-between align-items-center'
-        >
-          <div>{key}</div>
+          className='d-flex justify-content-between align-items-center'>
+          <div>
+            {key === 'canAddTeamMembers' ? 'Can add team members' : null}
+            {key === 'canRemoveTeamMembers' ? 'Can remove team members' : null}
+            {key === 'canChangePermissions' ? 'Can change permissions' : null}
+            {key === 'canAssignIssues' ? 'Can assign issues' : null}
+            {key === 'canSubmitIssues' ? 'Can submit issues' : null}
+            {key === 'canSetResolution' ? 'Can resolve issues' : null}
+            {key === 'canSetStatus' ? 'Can chenge issue status' : null}
+          </div>
           <div className='d-flex align-items-center'>
             <label className='switch-wrap'>
               <input
@@ -57,15 +66,13 @@ const PermsList = () => {
         <div className='d-flex justify-content-between mt-4'>
           <Button
             color='danger'
-            onClick={() => dispatch(closeSecondaryModal())}
-          >
+            onClick={() => dispatch(closeSecondaryModal())}>
             Cancel
           </Button>
 
           <Button
             color='success'
-            onClick={() => dispatch(changePermissions(project, user, perms))}
-          >
+            onClick={() => dispatch(changePermissions(project, user, perms))}>
             Confirm
           </Button>
         </div>
