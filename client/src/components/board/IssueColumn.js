@@ -8,8 +8,7 @@ import {
   CardHeader,
   CardFooter,
   Button,
-  UncontrolledTooltip,
-  Container
+  UncontrolledTooltip
 } from 'reactstrap';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import Avatar from '../common/Avatar';
@@ -74,7 +73,7 @@ const IssueColumn = props => {
                   <span>
                     <Avatar publicId={issue.assignedTo.avatar} size='25' />
                     <span className='font-sm ml-2'>
-                      {issue.assignedTo.firstName} {issue.assignedTo.secondName}
+                      {issue.assignedTo.firstName}
                     </span>
                   </span>
                   {issue.resolution !== 'unresolved' ? (
@@ -92,7 +91,7 @@ const IssueColumn = props => {
 
             <CardFooter className='d-flex justify-content-between align-items-center'>
               <div className='d-flex align-items-center'>
-                <Avatar publicId={issue.submittedBy.avatar} size='30' />
+                <Avatar publicId={issue.submittedBy.avatar} size='25' />
                 <span className='font-sm ml-2'>
                   {new Intl.DateTimeFormat('ru-RU', {
                     year: 'numeric',

@@ -43,15 +43,15 @@ const IssueTable = () => {
             <td colSpan='2'>
               <div className='d-flex justify-content-between font-weight-normal'>
                 <span>
-                  <span className='text-secondary'>Issue type:</span>{' '}
+                  <span className='text-secondary'>Issue type: </span>
                   <span>{issue.issueType}</span>
                 </span>
                 <span>
-                  <span className='text-secondary'>Severity:</span>{' '}
+                  <span className='text-secondary'>Severity: </span>
                   <span>{issue.severity}</span>
                 </span>
                 <span>
-                  <span className='text-secondary'>Priority:</span>{' '}
+                  <span className='text-secondary'>Priority: </span>
                   <span>{issue.priority}</span>
                 </span>
               </div>

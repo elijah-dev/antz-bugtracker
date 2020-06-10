@@ -9,12 +9,14 @@ import {
   CardFooter,
   Button
 } from 'reactstrap';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import SignInForm from './SignInForm';
 import SignUpForm from './SignUpForm';
 import FetchSpinner from '../common/FetchSpinner';
+import { signIn } from '../../actions/auth-actions';
 
 const AuthContainer = () => {
+  const dispatch = useDispatch();
   const [formType, setFormType] = useState('signin');
   const fetching = useSelector(state => state.currentUser.fetching);
 
@@ -35,7 +37,14 @@ const AuthContainer = () => {
                 <SignUpForm id={formType} />
               )}
             </CardBody>
-            <CardFooter className='text-right'>
+            <CardFooter className='d-flex justify-content-between'>
+              <Button
+                color='success'
+                onClick={() =>
+                  dispatch(signIn({ login: 'admin', password: '1234' }))
+                }>
+                DEMO
+              </Button>
               {formType === 'signin' ? (
                 <span>
                   <Button type='submit' color='primary' form={formType}>
@@ -46,7 +55,8 @@ const AuthContainer = () => {
                     Sign up
                   </Button>
                 </span>
-              ) : (
+              ) : null}
+              {formType === 'signup' ? (
                 <span>
                   <Button color='link' onClick={() => setFormType('signin')}>
                     Sign in
@@ -56,7 +66,7 @@ const AuthContainer = () => {
                     Sign up
                   </Button>
                 </span>
-              )}
+              ) : null}
             </CardFooter>
           </Card>
         </Col>

@@ -7,7 +7,6 @@ import {
   Card,
   CardBody,
   CardHeader,
-  CardFooter,
   ListGroup,
   ListGroupItem
 } from 'reactstrap';

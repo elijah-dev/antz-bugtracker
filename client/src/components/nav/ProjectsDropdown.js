@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dropdown, DropdownToggle, Button } from 'reactstrap';
+import { Dropdown, DropdownToggle } from 'reactstrap';
 import { useSelector } from 'react-redux';
 import ProjectsList from './ProjectList';
 

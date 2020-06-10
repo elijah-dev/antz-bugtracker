@@ -36,7 +36,7 @@ const PermsList = () => {
             {key === 'canAssignIssues' ? 'Can assign issues' : null}
             {key === 'canSubmitIssues' ? 'Can submit issues' : null}
             {key === 'canSetResolution' ? 'Can resolve issues' : null}
-            {key === 'canSetStatus' ? 'Can chenge issue status' : null}
+            {key === 'canSetStatus' ? 'Can change issue status' : null}
           </div>
           <div className='d-flex align-items-center'>
             <label className='switch-wrap'>

@@ -26,12 +26,12 @@ const IssueForm = props => {
   const [actualResult, setActualResult] = useState('');
   const [environment, setEnvironment] = useState('');
   const [affectVersion, setAffectVersion] = useState('');
+  const [files, setFiles] = useState([]);
   const dispatch = useDispatch();
   const formType = useSelector(state => state.modal.type);
   const project = useSelector(state => state.currentProject.data._id);
   const fetching = useSelector(state => state.issues.fetching);
 
-  const [files, setFiles] = useState([]);
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*, video/*',
     onDrop: acceptedFiles => {
@@ -102,8 +102,7 @@ const IssueForm = props => {
         {/* type, severity, priority */}
         <FormGroup
           inline
-          className='d-flex justify-content-between align-items-center'
-        >
+          className='d-flex justify-content-between align-items-center'>
           <div>
             <Label for='issue-type' className='mr-2'>
               Issue type
@@ -115,8 +114,7 @@ const IssueForm = props => {
                 caret
                 color='primary'
                 size='sm'
-                outline
-              >
+                outline>
                 {issueType}
               </DropdownToggle>
               <DropdownMenu>
@@ -144,8 +142,7 @@ const IssueForm = props => {
                 caret
                 color='primary'
                 size='sm'
-                outline
-              >
+                outline>
                 {severity}
               </DropdownToggle>
               <DropdownMenu>
@@ -176,8 +173,7 @@ const IssueForm = props => {
                 caret
                 color='primary'
                 size='sm'
-                outline
-              >
+                outline>
                 {priority}
               </DropdownToggle>
               <DropdownMenu>
