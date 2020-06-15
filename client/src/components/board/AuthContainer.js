@@ -43,7 +43,7 @@ const AuthContainer = () => {
                 onClick={() =>
                   dispatch(signIn({ login: 'admin', password: '1234' }))
                 }>
-                DEMO
+                ДЕМО
               </Button>
               {formType === 'signin' ? (
                 <span>

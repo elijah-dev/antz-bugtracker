@@ -12,12 +12,19 @@ import {
 } from 'reactstrap';
 import { setCurrentProject } from '../../actions/project-actions';
 import FetchSpinner from '../common/FetchSpinner';
+import { useEffect } from 'react';
 
 const ProjectPicker = () => {
   const dispatch = useDispatch();
 
   const projects = useSelector(state => state.userProjects.data);
   const fetching = useSelector(state => state.currentProject.fetching);
+
+  useEffect(() => {
+    if (projects.length === 1) {
+      dispatch(setCurrentProject(projects[0]._id));
+    }
+  }, [projects, dispatch]);
 
   const projectsList = projects.map(project => {
     return (
